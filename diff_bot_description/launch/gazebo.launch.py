@@ -15,6 +15,7 @@ def generate_launch_description():
     xacro_file = os.path.join(share_dir, 'urdf', 'diff_bot.urdf.xacro')
     robot_description_config = xacro.process_file(xacro_file)
     robot_urdf = robot_description_config.toxml()
+    controller_params = os.path.join(share_dir, 'config', 'my_controller.yaml')
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
@@ -64,6 +65,26 @@ def generate_launch_description():
         output='screen'
     )
 
+    controller_manager_node = Node(
+        package='controller_manager',
+        executable='ros2_control_node',
+        parameters=[{'robot_description': robot_urdf},
+                    controller_params]
+    )
+
+    diff_drive_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=["diff_controller"]
+    )
+
+    joint_broad_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['joint_broad']
+    )
+
+
     
 
     return LaunchDescription([
@@ -72,4 +93,8 @@ def generate_launch_description():
         gazebo_server,
         gazebo_client,
         urdf_spawn_node,
+        controller_manager_node,
+        joint_broad_spawner,
+        diff_drive_spawner
+        
     ])

@@ -16,6 +16,7 @@ def generate_launch_description():
     robot_urdf = robot_description_config.toxml()
 
     rviz_config_file = os.path.join(share_dir, 'config', 'display.rviz')
+    #controller_params = os.path.join(share_dir, 'config', 'my_controller.yaml')
 
     gui_arg = DeclareLaunchArgument(
         name='gui',
@@ -55,10 +56,12 @@ def generate_launch_description():
         output='screen'
     )
 
+
     return LaunchDescription([
         gui_arg,
         robot_state_publisher_node,
         joint_state_publisher_node,
         joint_state_publisher_gui_node,
         rviz_node
+      
     ])
