@@ -2,8 +2,11 @@
 <robot name="diff_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 <xacro:include filename="$(find diff_bot_description)/urdf/materials.xacro" />
-<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.trans" />
-<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.gazebo" />
+<!--<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.trans" /> -->
+<!--<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.gazebo" /> -->
+
+<link name="base_footprint"/>
+
 <link name="base_link">
   <inertial>
     <origin xyz="0.0003705884700577632 1.0604832058231093e-13 0.034681404539174294" rpy="0 0 0"/>
@@ -67,18 +70,52 @@
   </collision>
 </link>
 
-<joint name="Revolute 1" type="continuous">
+<joint name="fixed" type="fixed">
+  <orgin xyz="0 0 0" rpy="0 0 0"/>
+  <parent link="base_footprint"/>
+  <child link="base_link"/>
+</joint>
+
+<joint name="right_wheel_joint" type="continuous">
   <origin xyz="0.2 0.24 0.035" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="right_wheel_1"/>
   <axis xyz="0.0 1.0 0.0"/>
 </joint>
 
-<joint name="Revolute 2" type="continuous">
+<joint name="left_wheel_joint" type="continuous">
   <origin xyz="0.2 -0.24 0.035" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="left_wheel_1"/>
   <axis xyz="0.0 1.0 0.0"/>
 </joint>
+
+<ros2_control name="GazeboSystem" type="system">
+  <hardware>
+    <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+  </hardware>
+  <joint name="right_wheel_joint">
+    <command_interface name="velocity">
+      <param name="min">-10</param>
+      <param name="max">10</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+    <joint name="right_wheel_joint">
+    <command_interface name="velocity">
+      <param name="min">-10</param>
+      <param name="max">10</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+</ros2_control>
+
+<gazebo>
+  <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+    <parameters>$(find diff_bot_description)/config/my_controller.yaml</parameters>
+  </plugin>
+</gazebo>
 
 </robot>
