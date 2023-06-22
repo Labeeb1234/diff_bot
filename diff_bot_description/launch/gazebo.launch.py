@@ -12,18 +12,16 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     share_dir = get_package_share_directory('diff_bot_description')
 
-    xacro_file = os.path.join(share_dir, 'urdf', 'diff_bot.urdf.xacro')
+    xacro_file = os.path.join(share_dir, 'urdf', 'diff_bot.xacro')
     robot_description_config = xacro.process_file(xacro_file)
-    robot_urdf = robot_description_config.toxml()
+    robot_description = robot_description_config.toxml()
     controller_params = os.path.join(share_dir, 'config', 'my_controller.yaml')
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
-        parameters=[
-            {'robot_description': robot_urdf}
-        ]
+        parameters=[{'robot_description': robot_description}]
     )
 
     joint_state_publisher_node = Node(
@@ -65,12 +63,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    controller_manager_node = Node(
-        package='controller_manager',
-        executable='ros2_control_node',
-        parameters=[{'robot_description': robot_urdf},
-                    controller_params]
-    )
+
 
     diff_drive_spawner = Node(
         package='controller_manager',
@@ -93,7 +86,6 @@ def generate_launch_description():
         gazebo_server,
         gazebo_client,
         urdf_spawn_node,
-        controller_manager_node,
         joint_broad_spawner,
         diff_drive_spawner
         

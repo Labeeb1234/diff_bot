@@ -12,7 +12,7 @@
   <mu2>0.2</mu2>
   <self_collide>true</self_collide>
   <gravity>true</gravity>
-</gazebo>
+</gazebo> 
 
 <gazebo reference="right_wheel_1">
   <material>${body_color}</material>
