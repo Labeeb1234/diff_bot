@@ -20,5 +20,5 @@ diff_controller:
     wheel_separation: 0.45
     wheel_radius: 0.15
 
-    use_stamped_vel: true
+    use_stamped_vel: false
 
