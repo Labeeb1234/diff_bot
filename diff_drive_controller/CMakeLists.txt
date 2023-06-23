@@ -9,7 +9,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   controller_interface
   generate_parameter_library
   geometry_msgs
-  hardware_interface
+  hardware_interface 
   nav_msgs
   pluginlib
   rclcpp
@@ -62,7 +62,7 @@ if(BUILD_TESTING)
     geometry_msgs
     hardware_interface
     nav_msgs
-    rclcpp
+    rclcpp 
     rclcpp_lifecycle
     realtime_tools
     tf2
