@@ -110,19 +110,19 @@ protected:
   std::shared_ptr<ParamListener> param_listener_;
   Params params_;
 
-  Odometry odometry_;
+  //Odometry odometry_;
 
   // Timeout to consider cmd_vel commands old
   std::chrono::milliseconds cmd_vel_timeout_{500};
 
-  std::shared_ptr<rclcpp::Publisher<nav_msgs::msg::Odometry>> odometry_publisher_ = nullptr;
-  std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::msg::Odometry>>
-    realtime_odometry_publisher_ = nullptr;
+  //std::shared_ptr<rclcpp::Publisher<nav_msgs::msg::Odometry>> odometry_publisher_ = nullptr;
+  //std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::msg::Odometry>>
+    //realtime_odometry_publisher_ = nullptr;
 
-  std::shared_ptr<rclcpp::Publisher<tf2_msgs::msg::TFMessage>> odometry_transform_publisher_ =
-    nullptr;
-  std::shared_ptr<realtime_tools::RealtimePublisher<tf2_msgs::msg::TFMessage>>
-    realtime_odometry_transform_publisher_ = nullptr;
+  //std::shared_ptr<rclcpp::Publisher<tf2_msgs::msg::TFMessage>> odometry_transform_publisher_ =
+    //nullptr;
+  //std::shared_ptr<realtime_tools::RealtimePublisher<tf2_msgs::msg::TFMessage>>
+    //realtime_odometry_transform_publisher_ = nullptr;
 
   bool subscriber_is_active_ = false;
   rclcpp::Subscription<Twist>::SharedPtr velocity_command_subscriber_ = nullptr;
@@ -134,13 +134,13 @@ protected:
   std::queue<Twist> previous_commands_;  // last two commands
 
   // speed limiters
-  SpeedLimiter limiter_linear_;
-  SpeedLimiter limiter_angular_;
+  //SpeedLimiter limiter_linear_;
+  //SpeedLimiter limiter_angular_;
 
-  bool publish_limited_velocity_ = false;
-  std::shared_ptr<rclcpp::Publisher<Twist>> limited_velocity_publisher_ = nullptr;
-  std::shared_ptr<realtime_tools::RealtimePublisher<Twist>> realtime_limited_velocity_publisher_ =
-    nullptr;
+  //bool publish_limited_velocity_ = false;
+  //std::shared_ptr<rclcpp::Publisher<Twist>> limited_velocity_publisher_ = nullptr;
+  //std::shared_ptr<realtime_tools::RealtimePublisher<Twist>> realtime_limited_velocity_publisher_ =
+    //nullptr;
 
   rclcpp::Time previous_update_timestamp_{0};
 

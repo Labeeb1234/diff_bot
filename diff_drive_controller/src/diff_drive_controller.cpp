@@ -30,11 +30,8 @@
 
 namespace
 {
-constexpr auto DEFAULT_COMMAND_TOPIC = "~/cmd_vel";
+constexpr auto DEFAULT_COMMAND_TOPIC = "~/cmd_vel"; // stamped velocity topic
 constexpr auto DEFAULT_COMMAND_UNSTAMPED_TOPIC = "~/cmd_vel_unstamped";
-constexpr auto DEFAULT_COMMAND_OUT_TOPIC = "~/cmd_vel_out";
-constexpr auto DEFAULT_ODOMETRY_TOPIC = "~/odom";
-constexpr auto DEFAULT_TRANSFORM_TOPIC = "/tf";
 }  // namespace
 
 namespace diff_drive_controller
@@ -99,7 +96,7 @@ InterfaceConfiguration DiffDriveController::state_interface_configuration() cons
 }
 
 controller_interface::return_type DiffDriveController::update(
-  const rclcpp::Time & time, const rclcpp::Duration & period)
+  const rclcpp::Time & time, const rclcpp::Duration &)
 {
   auto logger = get_node()->get_logger();
   if (get_state().id() == State::PRIMARY_STATE_INACTIVE)
@@ -142,66 +139,66 @@ controller_interface::return_type DiffDriveController::update(
   const double left_wheel_radius = params_.left_wheel_radius_multiplier * params_.wheel_radius;
   const double right_wheel_radius = params_.right_wheel_radius_multiplier * params_.wheel_radius;
 
-  if (params_.open_loop)
-  {
-    odometry_.updateOpenLoop(linear_command, angular_command, time);
-  }
-  else
-  {
-    double left_feedback_mean = 0.0;
-    double right_feedback_mean = 0.0;
-    for (size_t index = 0; index < static_cast<size_t>(params_.wheels_per_side); ++index)
-    {
-      const double left_feedback = registered_left_wheel_handles_[index].feedback.get().get_value();
-      const double right_feedback =
-        registered_right_wheel_handles_[index].feedback.get().get_value();
+  //f (params_.open_loop)
+  //{
+    //odometry_.updateOpenLoop(linear_command, angular_command, time);
+  //}
+  //else
+  //{
+    //double left_feedback_mean = 0.0;
+    //double right_feedback_mean = 0.0;
+    //for (size_t index = 0; index < static_cast<size_t>(params_.wheels_per_side); ++index)
+    //{
+      //const double left_feedback = registered_left_wheel_handles_[index].feedback.get().get_value();
+      //const double right_feedback =
+        //registered_right_wheel_handles_[index].feedback.get().get_value();
 
-      if (std::isnan(left_feedback) || std::isnan(right_feedback))
-      {
-        RCLCPP_ERROR(
-          logger, "Either the left or right wheel %s is invalid for index [%zu]", feedback_type(),
-          index);
-        return controller_interface::return_type::ERROR;
-      }
+      //if (std::isnan(left_feedback) || std::isnan(right_feedback))
+      //{
+        //RCLCPP_ERROR(
+          //logger, "Either the left or right wheel %s is invalid for index [%zu]", feedback_type(),
+          //index);
+        //return controller_interface::return_type::ERROR;
+      //}
 
-      left_feedback_mean += left_feedback;
-      right_feedback_mean += right_feedback;
-    }
-    left_feedback_mean /= params_.wheels_per_side;
-    right_feedback_mean /= params_.wheels_per_side;
+      //left_feedback_mean += left_feedback;
+      //right_feedback_mean += right_feedback;
+    //}
+    //left_feedback_mean /= params_.wheels_per_side;
+    //right_feedback_mean /= params_.wheels_per_side;
 
-    if (params_.position_feedback)
-    {
-      odometry_.update(left_feedback_mean, right_feedback_mean, time);
-    }
-    else
-    {
-      odometry_.updateFromVelocity(
-        left_feedback_mean * left_wheel_radius * period.seconds(),
-        right_feedback_mean * right_wheel_radius * period.seconds(), time);
-    }
-  }
+    //if (params_.position_feedback)
+    //{
+      //odometry_.update(left_feedback_mean, right_feedback_mean, time);
+    //}
+    //else
+    //{
+      //odometry_.updateFromVelocity(
+        //left_feedback_mean * left_wheel_radius * period.seconds(),
+        //right_feedback_mean * right_wheel_radius * period.seconds(), time);
+    //}
+  //}
 
-  tf2::Quaternion orientation;
-  orientation.setRPY(0.0, 0.0, odometry_.getHeading());
+  //tf2::Quaternion orientation;
+  //orientation.setRPY(0.0, 0.0, odometry_.getHeading());
 
-  bool should_publish = false;
-  try
-  {
-    if (previous_publish_timestamp_ + publish_period_ < time)
-    {
-      previous_publish_timestamp_ += publish_period_;
-      should_publish = true;
-    }
-  }
-  catch (const std::runtime_error &)
-  {
+  //bool should_publish = false;
+  //try
+  //{
+    //if (previous_publish_timestamp_ + publish_period_ < time)
+    //{
+      //previous_publish_timestamp_ += publish_period_;
+      //should_publish = true;
+    //}
+ //}
+  //catch (const std::runtime_error &)
+  //{
     // Handle exceptions when the time source changes and initialize publish timestamp
-    previous_publish_timestamp_ = time;
-    should_publish = true;
-  }
+    //previous_publish_timestamp_ = time;
+    //should_publish = true;
+  //}
 
-  if (should_publish)
+  /*if (should_publish)
   {
     previous_publish_timestamp_ += publish_period_;
 
@@ -218,9 +215,9 @@ controller_interface::return_type DiffDriveController::update(
       odometry_message.twist.twist.linear.x = odometry_.getLinear();
       odometry_message.twist.twist.angular.z = odometry_.getAngular();
       realtime_odometry_publisher_->unlockAndPublish();
-    }
+    } */
 
-    if (params_.enable_odom_tf && realtime_odometry_transform_publisher_->trylock())
+    /*if (params_.enable_odom_tf && realtime_odometry_transform_publisher_->trylock())
     {
       auto & transform = realtime_odometry_transform_publisher_->msg_.transforms.front();
       transform.header.stamp = time;
@@ -232,9 +229,9 @@ controller_interface::return_type DiffDriveController::update(
       transform.transform.rotation.w = orientation.w();
       realtime_odometry_transform_publisher_->unlockAndPublish();
     }
-  }
+  } */
 
-  auto & last_command = previous_commands_.back().twist;
+  /*auto & last_command = previous_commands_.back().twist;
   auto & second_to_last_command = previous_commands_.front().twist;
   limiter_linear_.limit(
     linear_command, last_command.linear.x, second_to_last_command.linear.x, period.seconds());
@@ -242,29 +239,29 @@ controller_interface::return_type DiffDriveController::update(
     angular_command, last_command.angular.z, second_to_last_command.angular.z, period.seconds());
 
   previous_commands_.pop();
-  previous_commands_.emplace(command);
+  previous_commands_.emplace(command); */
 
   //    Publish limited velocity
-  if (publish_limited_velocity_ && realtime_limited_velocity_publisher_->trylock())
+  /*if (publish_limited_velocity_ && realtime_limited_velocity_publisher_->trylock())
   {
     auto & limited_velocity_command = realtime_limited_velocity_publisher_->msg_;
     limited_velocity_command.header.stamp = time;
     limited_velocity_command.twist = command.twist;
     realtime_limited_velocity_publisher_->unlockAndPublish();
-  }
+  } */
 
   // Compute wheels velocities:
   const double velocity_left =
     (linear_command - angular_command * wheel_separation / 2.0) / left_wheel_radius;
   const double velocity_right =
-    (linear_command + angular_command * wheel_separation / 2.0) / right_wheel_radius;
+    (linear_command + angular_command * wheel_separation / 2.0) / right_wheel_radius; 
 
   // Set wheels velocities:
   for (size_t index = 0; index < static_cast<size_t>(params_.wheels_per_side); ++index)
   {
     registered_left_wheel_handles_[index].velocity.get().set_value(velocity_left);
     registered_right_wheel_handles_[index].velocity.get().set_value(velocity_right);
-  }
+  } 
 
   return controller_interface::return_type::OK;
 }
@@ -295,18 +292,18 @@ controller_interface::CallbackReturn DiffDriveController::on_configure(
     return controller_interface::CallbackReturn::ERROR;
   }
 
-  const double wheel_separation = params_.wheel_separation_multiplier * params_.wheel_separation;
-  const double left_wheel_radius = params_.left_wheel_radius_multiplier * params_.wheel_radius;
-  const double right_wheel_radius = params_.right_wheel_radius_multiplier * params_.wheel_radius;
+  //const double wheel_separation = params_.wheel_separation_multiplier * params_.wheel_separation;
+  //const double left_wheel_radius = params_.left_wheel_radius_multiplier * params_.wheel_radius;
+  //const double right_wheel_radius = params_.right_wheel_radius_multiplier * params_.wheel_radius;
 
-  odometry_.setWheelParams(wheel_separation, left_wheel_radius, right_wheel_radius);
-  odometry_.setVelocityRollingWindowSize(params_.velocity_rolling_window_size);
+  //odometry_.setWheelParams(wheel_separation, left_wheel_radius, right_wheel_radius);
+  //odometry_.setVelocityRollingWindowSize(params_.velocity_rolling_window_size);
 
   cmd_vel_timeout_ = std::chrono::milliseconds{static_cast<int>(params_.cmd_vel_timeout * 1000.0)};
-  publish_limited_velocity_ = params_.publish_limited_velocity;
+  // publish_limited_velocity_ = params_.publish_limited_velocity;
   use_stamped_vel_ = params_.use_stamped_vel;
 
-  limiter_linear_ = SpeedLimiter(
+  /*limiter_linear_ = SpeedLimiter(
     params_.linear.x.has_velocity_limits, params_.linear.x.has_acceleration_limits,
     params_.linear.x.has_jerk_limits, params_.linear.x.min_velocity, params_.linear.x.max_velocity,
     params_.linear.x.min_acceleration, params_.linear.x.max_acceleration, params_.linear.x.min_jerk,
@@ -316,7 +313,7 @@ controller_interface::CallbackReturn DiffDriveController::on_configure(
     params_.angular.z.has_velocity_limits, params_.angular.z.has_acceleration_limits,
     params_.angular.z.has_jerk_limits, params_.angular.z.min_velocity,
     params_.angular.z.max_velocity, params_.angular.z.min_acceleration,
-    params_.angular.z.max_acceleration, params_.angular.z.min_jerk, params_.angular.z.max_jerk);
+    params_.angular.z.max_acceleration, params_.angular.z.min_jerk, params_.angular.z.max_jerk); */
 
   if (!reset())
   {
@@ -326,13 +323,13 @@ controller_interface::CallbackReturn DiffDriveController::on_configure(
   // left and right sides are both equal at this point
   params_.wheels_per_side = params_.left_wheel_names.size();
 
-  if (publish_limited_velocity_)
-  {
-    limited_velocity_publisher_ =
-      get_node()->create_publisher<Twist>(DEFAULT_COMMAND_OUT_TOPIC, rclcpp::SystemDefaultsQoS());
-    realtime_limited_velocity_publisher_ =
-      std::make_shared<realtime_tools::RealtimePublisher<Twist>>(limited_velocity_publisher_);
-  }
+  //if (publish_limited_velocity_)
+  //{
+    //limited_velocity_publisher_ =
+      //get_node()->create_publisher<Twist>(DEFAULT_COMMAND_OUT_TOPIC, rclcpp::SystemDefaultsQoS());
+    //realtime_limited_velocity_publisher_ =
+      //std::make_shared<realtime_tools::RealtimePublisher<Twist>>(limited_velocity_publisher_);
+  //} 
 
   const Twist empty_twist;
   received_velocity_msg_ptr_.set(std::make_shared<Twist>(empty_twist));
@@ -388,11 +385,11 @@ controller_interface::CallbackReturn DiffDriveController::on_configure(
   }
 
   // initialize odometry publisher and messasge
-  odometry_publisher_ = get_node()->create_publisher<nav_msgs::msg::Odometry>(
-    DEFAULT_ODOMETRY_TOPIC, rclcpp::SystemDefaultsQoS());
-  realtime_odometry_publisher_ =
-    std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::msg::Odometry>>(
-      odometry_publisher_);
+  //odometry_publisher_ = get_node()->create_publisher<nav_msgs::msg::Odometry>(
+    //DEFAULT_ODOMETRY_TOPIC, rclcpp::SystemDefaultsQoS());
+  //realtime_odometry_publisher_ =
+    //std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::msg::Odometry>>(
+      //odometry_publisher_);
 
   std::string controller_namespace = std::string(get_node()->get_namespace());
 
@@ -405,42 +402,42 @@ controller_interface::CallbackReturn DiffDriveController::on_configure(
     controller_namespace = controller_namespace.erase(0, 1) + "/";
   }
 
-  const auto odom_frame_id = controller_namespace + params_.odom_frame_id;
-  const auto base_frame_id = controller_namespace + params_.base_frame_id;
+  //const auto odom_frame_id = controller_namespace + params_.odom_frame_id;
+  //const auto base_frame_id = controller_namespace + params_.base_frame_id;
 
-  auto & odometry_message = realtime_odometry_publisher_->msg_;
-  odometry_message.header.frame_id = odom_frame_id;
-  odometry_message.child_frame_id = base_frame_id;
+  //auto & odometry_message = realtime_odometry_publisher_->msg_;
+  //odometry_message.header.frame_id = odom_frame_id;
+  //odometry_message.child_frame_id = base_frame_id;
 
   // limit the publication on the topics /odom and /tf
   publish_rate_ = params_.publish_rate;
   publish_period_ = rclcpp::Duration::from_seconds(1.0 / publish_rate_);
 
   // initialize odom values zeros
-  odometry_message.twist =
-    geometry_msgs::msg::TwistWithCovariance(rosidl_runtime_cpp::MessageInitialization::ALL);
+  //odometry_message.twist =
+    //geometry_msgs::msg::TwistWithCovariance(rosidl_runtime_cpp::MessageInitialization::ALL);
 
-  constexpr size_t NUM_DIMENSIONS = 6;
-  for (size_t index = 0; index < 6; ++index)
-  {
+  //constexpr size_t NUM_DIMENSIONS = 6;
+  //for (size_t index = 0; index < 6; ++index)
+  //{
     // 0, 7, 14, 21, 28, 35
-    const size_t diagonal_index = NUM_DIMENSIONS * index + index;
-    odometry_message.pose.covariance[diagonal_index] = params_.pose_covariance_diagonal[index];
-    odometry_message.twist.covariance[diagonal_index] = params_.twist_covariance_diagonal[index];
-  }
+    //const size_t diagonal_index = NUM_DIMENSIONS * index + index;
+    //odometry_message.pose.covariance[diagonal_index] = params_.pose_covariance_diagonal[index];
+    //odometry_message.twist.covariance[diagonal_index] = params_.twist_covariance_diagonal[index];
+  //}
 
   // initialize transform publisher and message
-  odometry_transform_publisher_ = get_node()->create_publisher<tf2_msgs::msg::TFMessage>(
-    DEFAULT_TRANSFORM_TOPIC, rclcpp::SystemDefaultsQoS());
-  realtime_odometry_transform_publisher_ =
-    std::make_shared<realtime_tools::RealtimePublisher<tf2_msgs::msg::TFMessage>>(
-      odometry_transform_publisher_);
+  //odometry_transform_publisher_ = get_node()->create_publisher<tf2_msgs::msg::TFMessage>(
+    //DEFAULT_TRANSFORM_TOPIC, rclcpp::SystemDefaultsQoS());
+  //realtime_odometry_transform_publisher_ =
+    //std::make_shared<realtime_tools::RealtimePublisher<tf2_msgs::msg::TFMessage>>(
+      //odometry_transform_publisher_);
 
   // keeping track of odom and base_link transforms only
-  auto & odometry_transform_message = realtime_odometry_transform_publisher_->msg_;
-  odometry_transform_message.transforms.resize(1);
-  odometry_transform_message.transforms.front().header.frame_id = odom_frame_id;
-  odometry_transform_message.transforms.front().child_frame_id = base_frame_id;
+  //auto & odometry_transform_message = realtime_odometry_transform_publisher_->msg_;
+  //odometry_transform_message.transforms.resize(1);
+  //odometry_transform_message.transforms.front().header.frame_id = odom_frame_id;
+  //odometry_transform_message.transforms.front().child_frame_id = base_frame_id;
 
   previous_update_timestamp_ = get_node()->get_clock()->now();
   return controller_interface::CallbackReturn::SUCCESS;
@@ -513,7 +510,7 @@ controller_interface::CallbackReturn DiffDriveController::on_error(const rclcpp_
 
 bool DiffDriveController::reset()
 {
-  odometry_.resetOdometry();
+  //odometry_.resetOdometry();
 
   // release the old queue
   std::queue<Twist> empty;
