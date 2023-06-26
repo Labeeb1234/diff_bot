@@ -29,7 +29,7 @@ namespace diff_bot_controller
 
     DiffBotController::DiffBotController() 
         : controller_interface::ControllerInterface()
-        , velocity_command_unstamped_subscriber_(nullptr)
+        , velocity_command_subscriber_(nullptr)
         , velocity_command_ptr_(nullptr){}
 
     controller_interface::CallbackReturn DiffBotController::on_init()
@@ -86,19 +86,21 @@ namespace diff_bot_controller
 
 
         // creating a subcriber to subcriber to Twist(unstamped) topic
-        velocity_command_unstamped_subscriber_ = get_node()->create_subscription<geometry_msgs::msg::Twist>(DEFAULT_COMMAND_TOPIC, rclcpp::SystemDefaultsQoS(),[this](std::shared_ptr<geometry_msgs::msg::Twist> msg)->void
+        velocity_command_subscriber_ = get_node()->create_subscription<Twist>(DEFAULT_COMMAND_TOPIC, rclcpp::SystemDefaultsQoS(),[this](Twist::SharedPtr msg)
             {
                 if(!subscriber_is_active_)
                 {
-                    RCLCPP_WARN(get_node()->get_logger(),"Can't accept new msgs subsriber is not active\n");
+                    RCLCPP_WARN(get_node()->get_logger(),"Can't accept new msgs subscriber is not active\n");
                     return;
                 }
+                
+                velocity_command_ptr_.writeFromNonRT(msg);
                 //velocity_command_ptr_.get(msg);
                 // fake headers
-                std::shared_ptr<Twist> twist_stamped;
-                velocity_command_ptr_.get(twist_stamped);
-                twist_stamped->twist = *msg;
-                twist_stamped->header.stamp = get_node()->get_clock()->now();
+                //std::shared_ptr<Twist> twist_stamped;
+                //velocity_command_ptr_.get(twist_stamped);
+                //twist_stamped->twist = *msg;
+                //twist_stamped->header.stamp = get_node()->get_clock()->now();
                 
             });
 
@@ -153,7 +155,7 @@ namespace diff_bot_controller
             }
 
             subscriber_is_active_ = true;
-            RCLCPP_INFO(get_node()->get_logger(),"Subcriber and publisher are active now\n");
+            RCLCPP_INFO(get_node()->get_logger(),"Subscriber and publisher are active now\n");
             return controller_interface::CallbackReturn::SUCCESS;
         }
 
@@ -192,14 +194,18 @@ namespace diff_bot_controller
         
         RCLCPP_INFO(get_node()->get_logger(), "Entered the update phase: working?\n");
         // to get previous velocity command 
-        std::shared_ptr<geometry_msgs::msg::Twist> msg;
-        //velocity_command_ptr_.get(msg);
-        geometry_msgs::msg::Twist vel_cmd = *(msg);
-
+        auto velocity_command = velocity_command_ptr_.readFromRT();
+        if (!velocity_command || !(*velocity_command)) 
+        {
+            return controller_interface::return_type::OK;
+        }
+        //std::shared_ptr<Twist> velocity_command;
+        const auto msg_linear = (*velocity_command)-> linear;
+        const auto msg_angular = (*velocity_command)->angular;
         // inverse kinematics of the 4-omni-wheel-robot
-        double v_x_des = vel_cmd.linear.x;
-        //double v_y_des = twist.linear.y;
-        double omega_des = vel_cmd.angular.z;
+        double v_x_des = msg_linear.x;
+        //double v_y_des = msg_linear.y;
+        double omega_des = msg_angular.z;
 
         std::vector<double> wheel_velocity;
         wheel_velocity[0] = (2*v_x_des - omega_des*wheel_separation_)/(2*wheel_radius_);

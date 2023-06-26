@@ -26,7 +26,7 @@ namespace diff_bot_controller
 {
 class DiffBotController : public controller_interface::ControllerInterface
 {
-  using Twist = geometry_msgs::msg::TwistStamped;
+  using Twist = geometry_msgs::msg::Twist;
 
 public:
    
@@ -61,8 +61,8 @@ protected:
 
     bool subscriber_is_active_ = false;
     //rclcpp::Subscription<Twist>::SharedPtr velocity_command_subscriber_;
-    rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr velocity_command_unstamped_subscriber_;
-    realtime_tools::RealtimeBox<std::shared_ptr<Twist>> velocity_command_ptr_;
+    rclcpp::Subscription<Twist>::SharedPtr velocity_command_subscriber_;
+    realtime_tools::RealtimeBuffer<std::shared_ptr<Twist>> velocity_command_ptr_;
 
     //std::queue<Twist> previous_commands_; 
 
