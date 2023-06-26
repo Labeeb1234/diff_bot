@@ -13,6 +13,7 @@
 #include "diff_drive_controller/speed_limiter.hpp"
 #include "diff_drive_controller/visibility_control.h"
 #include "geometry_msgs/msg/twist_stamped.hpp"
+#include "geometry_msgs/msg/twist.hpp"
 #include "hardware_interface/handle.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/state.hpp"
@@ -25,7 +26,7 @@ namespace diff_bot_controller
 {
 class DiffBotController : public controller_interface::ControllerInterface
 {
-  using Twist = geometry_msgs::msg::Twist;
+  using Twist = geometry_msgs::msg::TwistStamped;
 
 public:
    
@@ -59,15 +60,16 @@ protected:
     std::vector<std::string> wheel_joint_names_;
 
     bool subscriber_is_active_ = false;
-    rclcpp::Subscription<Twist>::SharedPtr velocity_command_subscriber_;
+    //rclcpp::Subscription<Twist>::SharedPtr velocity_command_subscriber_;
+    rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr velocity_command_unstamped_subscriber_;
     realtime_tools::RealtimeBox<std::shared_ptr<Twist>> velocity_command_ptr_;
 
-    std::queue<Twist> previous_commands_; 
+    //std::queue<Twist> previous_commands_; 
 
     double wheel_radius_;
     double wheel_separation_;
     
-    rclcpp::Time previous_update_timestamp_{0};
+    //rclcpp::Time previous_update_timestamp_{0};
 
     double publish_rate_ = 50.0;
     rclcpp::Duration publish_period_ = rclcpp::Duration::from_nanoseconds(0);

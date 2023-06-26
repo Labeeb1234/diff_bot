@@ -29,7 +29,7 @@ namespace diff_bot_controller
 
     DiffBotController::DiffBotController() 
         : controller_interface::ControllerInterface()
-        , velocity_command_subscriber_(nullptr)
+        , velocity_command_unstamped_subscriber_(nullptr)
         , velocity_command_ptr_(nullptr){}
 
     controller_interface::CallbackReturn DiffBotController::on_init()
@@ -44,7 +44,7 @@ namespace diff_bot_controller
         RCLCPP_INFO(get_node()->get_logger(), "Configure DiffBotController\n");
         for(const auto &joint_name: wheel_joint_names_)
         {
-            conf_names.push_back(joint_name+ "/" + hardware_interface::HW_IF_VELOCITY);
+            conf_names.push_back(joint_name+ "/" + HW_IF_VELOCITY);
 
         }
         return {controller_interface::interface_configuration_type::INDIVIDUAL, conf_names};
@@ -85,15 +85,20 @@ namespace diff_bot_controller
         wheel_separation_ = get_node()->get_parameter("wheel_separation").as_double();
 
 
-        // creating a subcriber to subcriber to Twist topic
-        velocity_command_subscriber_ = get_node()->create_subscription<Twist>(DEFAULT_COMMAND_TOPIC, rclcpp::SystemDefaultsQoS(),[this](std::shared_ptr<Twist> msg)
+        // creating a subcriber to subcriber to Twist(unstamped) topic
+        velocity_command_unstamped_subscriber_ = get_node()->create_subscription<geometry_msgs::msg::Twist>(DEFAULT_COMMAND_TOPIC, rclcpp::SystemDefaultsQoS(),[this](std::shared_ptr<geometry_msgs::msg::Twist> msg)->void
             {
                 if(!subscriber_is_active_)
                 {
                     RCLCPP_WARN(get_node()->get_logger(),"Can't accept new msgs subsriber is not active\n");
                     return;
                 }
-                velocity_command_ptr_.get(msg);
+                //velocity_command_ptr_.get(msg);
+                // fake headers
+                std::shared_ptr<Twist> twist_stamped;
+                velocity_command_ptr_.get(twist_stamped);
+                twist_stamped->twist = *msg;
+                twist_stamped->header.stamp = get_node()->get_clock()->now();
                 
             });
 
@@ -114,10 +119,11 @@ namespace diff_bot_controller
         {
             for(const auto &wheel_joint_name: wheel_joint_names_)
             {
+                const auto interface_name = HW_IF_VELOCITY;
                 const auto state_handle = std::find_if(
-                    state_interfaces_.cbegin(), state_interfaces_.cend(), [&wheel_joint_name](const auto &interface)
+                    state_interfaces_.cbegin(), state_interfaces_.cend(), [&wheel_joint_name, &interface_name](const auto &interface)
                     {
-                        return interface.get_name() == wheel_joint_name && interface.get_interface_name() == hardware_interface::HW_IF_VELOCITY;
+                        return interface.get_prefix_name() == wheel_joint_name && interface.get_interface_name() == interface_name;
 
                     });
 
@@ -130,7 +136,7 @@ namespace diff_bot_controller
                 const auto command_handle = std::find_if(
                     command_interfaces_.begin(), command_interfaces_.end(), [&wheel_joint_name](const auto &interface)
                     {
-                        return interface.get_name() == wheel_joint_name && interface.get_interface_name() == hardware_interface::HW_IF_VELOCITY;
+                        return interface.get_prefix_name() == wheel_joint_name && interface.get_interface_name() == hardware_interface::HW_IF_VELOCITY;
                     });
                 
                 if(command_handle == command_interfaces_.end())
@@ -186,11 +192,9 @@ namespace diff_bot_controller
         
         RCLCPP_INFO(get_node()->get_logger(), "Entered the update phase: working?\n");
         // to get previous velocity command 
-        std::shared_ptr<Twist> msg;
-        velocity_command_ptr_.get(msg);
-
-
-        Twist vel_cmd = *(msg);
+        std::shared_ptr<geometry_msgs::msg::Twist> msg;
+        //velocity_command_ptr_.get(msg);
+        geometry_msgs::msg::Twist vel_cmd = *(msg);
 
         // inverse kinematics of the 4-omni-wheel-robot
         double v_x_des = vel_cmd.linear.x;
@@ -201,8 +205,8 @@ namespace diff_bot_controller
         wheel_velocity[0] = (2*v_x_des - omega_des*wheel_separation_)/(2*wheel_radius_);
         wheel_velocity[1] = (2*v_x_des + omega_des*wheel_separation_)/(2*wheel_radius_);
 
-        registered_wheel_handles_[0].velocity_command.get().set_value(wheel_velocity.at(0));
-        registered_wheel_handles_[1].velocity_command.get().set_value(wheel_velocity.at(1));
+        registered_wheel_handles_[0].velocity_command.get().set_value(wheel_velocity[0]);
+        registered_wheel_handles_[1].velocity_command.get().set_value(wheel_velocity[1]);
         return controller_interface::return_type::OK;
     }
     DiffBotController::~DiffBotController() {}
