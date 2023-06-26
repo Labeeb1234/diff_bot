@@ -207,7 +207,7 @@ namespace diff_bot_controller
         //double v_y_des = msg_linear.y;
         double omega_des = msg_angular.z;
 
-        std::vector<double> wheel_velocity;
+        std::vector<double> wheel_velocity(2);
         wheel_velocity[0] = (2*v_x_des - omega_des*wheel_separation_)/(2*wheel_radius_);
         wheel_velocity[1] = (2*v_x_des + omega_des*wheel_separation_)/(2*wheel_radius_);
 
