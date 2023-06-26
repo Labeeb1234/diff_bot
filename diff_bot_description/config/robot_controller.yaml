@@ -1,0 +1,19 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 30
+    use_sim_time: true
+
+    joint_broad:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    
+    diff_bot_controller:
+      type: diff_bot_controller/DiffBotController
+    
+
+diff_bot_controller:
+  ros__parameters:
+    wheel_joint_names: ['left_wheel_joint', 'right_wheel_joint']
+    wheel_separation: 0.45
+    wheel_radius: 0.15 
+
+

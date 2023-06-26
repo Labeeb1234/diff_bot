@@ -65,16 +65,16 @@ def generate_launch_description():
 
 
 
-    diff_drive_spawner = Node(
+    diff_bot_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
-        arguments=["diff_controller"]
+        arguments=['diff_bot_controller', '--controller-manager', '/controller_manager']
     )
 
     joint_broad_spawner = Node(
         package='controller_manager',
         executable='spawner',
-        arguments=['joint_broad']
+        arguments=['joint_broad', '--controller-manager', '/controller_manager']
     )
 
 
@@ -87,6 +87,7 @@ def generate_launch_description():
         gazebo_client,
         urdf_spawn_node,
         joint_broad_spawner,
-        diff_drive_spawner
+        #diff_drive_spawner
+        diff_bot_controller_spawner
         
     ])
