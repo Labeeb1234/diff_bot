@@ -63,8 +63,6 @@ def generate_launch_description():
         output='screen'
     )
 
-
-
     diff_bot_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
@@ -77,8 +75,13 @@ def generate_launch_description():
         arguments=['joint_broad', '--controller-manager', '/controller_manager']
     )
 
-
-    
+    static_state_transform_publisher_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='odom_to_base_link_tf',
+        output='screen',
+        arguments=['0.0','0.0','0.0','0.0','0.0','0.0', 'odom', 'base_link']
+    )
 
     return LaunchDescription([
         robot_state_publisher_node,
@@ -87,7 +90,7 @@ def generate_launch_description():
         gazebo_client,
         urdf_spawn_node,
         joint_broad_spawner,
-        #diff_drive_spawner
-        diff_bot_controller_spawner
+        diff_bot_controller_spawner,
+        static_state_transform_publisher_node
         
     ])

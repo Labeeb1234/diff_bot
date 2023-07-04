@@ -5,7 +5,7 @@
 <!--<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.trans" /> -->
 <!--<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.gazebo" /> -->
 
-<link name="base_footprint"/>
+<!--<link name="base_footprint"/>-->
 
 <link name="base_link">
   <inertial>
@@ -70,11 +70,11 @@
   </collision>
 </link>
 
-<joint name="fixed" type="fixed">
+<!--<joint name="fixed" type="fixed">
   <origin xyz="0 0 0" rpy="0 0 0"/>
   <parent link="base_footprint"/>
   <child link="base_link"/>
-</joint>
+</joint> -->
 
 <joint name="right_wheel_joint" type="continuous">
   <origin xyz="0.2 0.24 0.035" rpy="0 0 0"/>
