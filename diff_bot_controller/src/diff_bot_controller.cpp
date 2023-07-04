@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <cmath>
 
 #include "diff_bot_controller/diff_bot_controller.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
@@ -14,6 +15,8 @@
 namespace
 {
     constexpr auto DEFAULT_COMMAND_TOPIC = "~/cmd_vel_unstamped";
+    constexpr auto DEFAULT_ODOM_TOPIC = "~/odom";
+    constexpr auto DEFAULT_TRANSFORM_TOPIC = "~/tf2";
     constexpr auto DEFAULT_COMMAND_OUT_TOPIC = "~/cmd_vel_out";
 }  
 
@@ -84,6 +87,27 @@ namespace diff_bot_controller
         wheel_radius_ = get_node()->get_parameter("wheel_radius").as_double();
         wheel_separation_ = get_node()->get_parameter("wheel_separation").as_double();
 
+        odom_params_.odom_frame_id = get_node()->get_parameter("odom_frame_id").as_string();
+        odom_params_.base_frame_id = get_node()->get_parameter("base_frame_id").as_string();
+        odom_params_.open_loop = get_node()->get_parameter("open_loop").as_bool();
+        odom_params_.enable_odom_tf = get_node()->get_parameter("enable_odom_tf").as_bool();
+
+        // initializing odom publisher
+        odom_publisher_ = get_node()->create_publisher<nav_msgs::msg::Odometry>(DEFAULT_ODOM_TOPIC, rclcpp::SystemDefaultsQoS());
+
+        publish_rate_ = get_node()->get_parameter("publish_rate").as_double();
+        publish_period_ = rclcpp::Duration::from_seconds(1.0/publish_rate_);
+        previous_publish_timestamp_ = get_node()->get_clock()->now();
+
+        // publisher for odom->base tf 
+        odom_transform_publisher_ = get_node()->create_publisher<tf2_msgs::msg::TFMessage>(DEFAULT_TRANSFORM_TOPIC, rclcpp::SystemDefaultsQoS());
+        odom_transform_msg_ = std::make_shared<realtime_tools::RealtimePublisher<tf2_msgs::msg::TFMessage>>(odom_transform_publisher_);
+
+        // to keep track of odom -> base_link transform (maybe vizulaized in RViz)
+        auto & odom_tf_msg_ = odom_transform_msg_->msg_; 
+        odom_tf_msg_.transforms.resize(1);
+        odom_tf_msg_.transforms.front().header.frame_id = odom_params_.odom_frame_id;
+        odom_tf_msg_.transforms.front().child_frame_id = odom_params_.base_frame_id;
 
         // creating a subcriber to subcriber to Twist(unstamped) topic
         velocity_command_subscriber_ = get_node()->create_subscription<Twist>(DEFAULT_COMMAND_TOPIC, rclcpp::SystemDefaultsQoS(),[this](Twist::SharedPtr msg)
@@ -156,6 +180,7 @@ namespace diff_bot_controller
 
             subscriber_is_active_ = true;
             RCLCPP_INFO(get_node()->get_logger(),"Subscriber and publisher are active now\n");
+            previous_updated_timestamp_ = get_node()->get_clock()->now();
             return controller_interface::CallbackReturn::SUCCESS;
         }
 
@@ -192,7 +217,7 @@ namespace diff_bot_controller
     controller_interface::return_type DiffBotController::update(const rclcpp::Time &, const rclcpp::Duration &)
     {
         
-        RCLCPP_INFO(get_node()->get_logger(), "Entered the update phase: working?\n");
+        //RCLCPP_INFO(get_node()->get_logger(), "Entered the update phase: working?\n");
         // to get previous velocity command 
         auto velocity_command = velocity_command_ptr_.readFromRT();
         if (!velocity_command || !(*velocity_command)) 
@@ -213,8 +238,59 @@ namespace diff_bot_controller
 
         registered_wheel_handles_[0].velocity_command.get().set_value(wheel_velocity[0]);
         registered_wheel_handles_[1].velocity_command.get().set_value(wheel_velocity[1]);
+        
+        const auto current_time = get_node()->get_clock()->now();
+        const rclcpp::Duration dt = current_time - previous_updated_timestamp_;
+
+ 
+        // do odom calculations here
+        if(odom_params_.open_loop == true)
+        {
+            // Euler integration
+            robot_pose_.pose_x = robot_pose_.pose_x + dt.seconds()*(v_x_des*cos(robot_pose_.pose_th));
+            robot_pose_.pose_y = robot_pose_.pose_y + dt.seconds()*(v_x_des*sin(robot_pose_.pose_th));
+            robot_pose_.pose_th = robot_pose_.pose_th + dt.seconds()*(omega_des);
+
+        }
+        // put the current time as previous time as the odom calculations are done 
+
+        tf2::Quaternion orientation;
+        orientation.setRPY(0.0,0.0,robot_pose_.pose_th);
+        // populating the odom msg
+        if(current_time > publish_period_ + previous_publish_timestamp_)
+        {
+            previous_publish_timestamp_ = previous_publish_timestamp_ + publish_period_;
+            odom_msg_.header.stamp = current_time;
+            odom_msg_.header.frame_id = odom_params_.odom_frame_id;
+            odom_msg_.child_frame_id = odom_params_.base_frame_id;
+            odom_msg_.pose.pose.position.x = robot_pose_.pose_x;
+            odom_msg_.pose.pose.position.y = robot_pose_.pose_y;
+            odom_msg_.pose.pose.position.z = 0.0;
+            odom_msg_.pose.pose.orientation.x = orientation.x();
+            odom_msg_.pose.pose.orientation.y = orientation.y();
+            odom_msg_.pose.pose.orientation.z = orientation.z();
+            odom_msg_.pose.pose.orientation.w = orientation.w();
+            odom_msg_.twist.twist.linear = (*velocity_command)->linear;
+            odom_msg_.twist.twist.angular = (*velocity_command)->angular;
+            odom_publisher_->publish(odom_msg_);
+        }
+        previous_updated_timestamp_ = current_time;
+        
+        if(odom_params_.enable_odom_tf == true && odom_transform_msg_->trylock())
+        {
+            auto & transform = odom_transform_msg_->msg_.transforms.front();
+            transform.header.stamp = current_time;
+            transform.transform.translation.x = robot_pose_.pose_x;
+            transform.transform.translation.y = robot_pose_.pose_y;
+            transform.transform.rotation.x = orientation.x();
+            transform.transform.rotation.y = orientation.y();
+            transform.transform.rotation.z = orientation.z();
+            transform.transform.rotation.w = orientation.w();
+            odom_transform_msg_->unlockAndPublish();
+        }
         return controller_interface::return_type::OK;
     }
+
     DiffBotController::~DiffBotController() {}
 
 }
