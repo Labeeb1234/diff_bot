@@ -16,8 +16,16 @@ def generate_launch_description():
     robot_urdf = robot_description_config.toxml()
 
     rviz_config_file = os.path.join(share_dir, 'config', 'display.rviz')
-    #controller_params = os.path.join(share_dir, 'config', 'my_controller.yaml')
+    
+    
+    use_sim_time = LaunchConfiguration('use_sim_time')
 
+    use_sim_time_cmd = DeclareLaunchArgument(
+        name='use_sim_time',
+        default_value='True',
+        description='use simulation clock if set to true'
+    )
+    
     gui_arg = DeclareLaunchArgument(
         name='gui',
         default_value='True'
@@ -34,19 +42,19 @@ def generate_launch_description():
         ]
     )
 
-    joint_state_publisher_node = Node(
-        condition=UnlessCondition(show_gui),
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        name='joint_state_publisher'
-    )
+    # joint_state_publisher_node = Node(
+    #     condition=UnlessCondition(show_gui),
+    #     package='joint_state_publisher',
+    #     executable='joint_state_publisher',
+    #     name='joint_state_publisher'
+    # )
 
-    joint_state_publisher_gui_node = Node(
-        condition=IfCondition(show_gui),
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui',
-        name='joint_state_publisher_gui'
-    )
+    # joint_state_publisher_gui_node = Node(
+    #     condition=IfCondition(show_gui),
+    #     package='joint_state_publisher_gui',
+    #     executable='joint_state_publisher_gui',
+    #     name='joint_state_publisher_gui'
+    # )
 
     rviz_node = Node(
         package='rviz2',
@@ -56,12 +64,21 @@ def generate_launch_description():
         output='screen'
     )
 
+    robot_localization_node = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        output='screen',
+        parameters=[os.path.join(share_dir, 'config/ekf.yaml')]
+    )
 
     return LaunchDescription([
-        gui_arg,
-        robot_state_publisher_node,
-        joint_state_publisher_node,
-        joint_state_publisher_gui_node,
-        rviz_node
+        #gui_arg,
+        #use_sim_time_cmd,
+        #robot_state_publisher_node,
+        #joint_state_publisher_node,
+        #joint_state_publisher_gui_node,
+        robot_localization_node,
+        rviz_node,
       
     ])

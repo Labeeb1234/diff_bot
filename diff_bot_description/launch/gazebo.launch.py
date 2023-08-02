@@ -1,9 +1,9 @@
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import PathJoinSubstitution
+from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 import os
 import xacro
 from ament_index_python.packages import get_package_share_directory
@@ -15,7 +15,17 @@ def generate_launch_description():
     xacro_file = os.path.join(share_dir, 'urdf', 'diff_bot.xacro')
     robot_description_config = xacro.process_file(xacro_file)
     robot_description = robot_description_config.toxml()
-    controller_params = os.path.join(share_dir, 'config', 'my_controller.yaml')
+    #controller_params = os.path.join(share_dir, 'config', 'my_controller.yaml')
+
+
+    use_sim_time = LaunchConfiguration('use_sim_time')
+
+    use_sim_time_cmd = DeclareLaunchArgument(
+        name='use_sim_time',
+        default_value='True',
+        description='use simulation clock if set to true'
+    )
+
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
@@ -63,8 +73,6 @@ def generate_launch_description():
         output='screen'
     )
 
-
-
     diff_bot_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
@@ -77,17 +85,22 @@ def generate_launch_description():
         arguments=['joint_broad', '--controller-manager', '/controller_manager']
     )
 
-
-    
+    static_state_transform_publisher_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='odom_to_base_link_tf',
+        output='screen',
+        arguments=['0.0','0.0','0.0','0.0','0.0','0.0', 'odom', 'map']
+    )
 
     return LaunchDescription([
+        use_sim_time_cmd,
         robot_state_publisher_node,
         joint_state_publisher_node,
         gazebo_server,
         gazebo_client,
         urdf_spawn_node,
         joint_broad_spawner,
-        #diff_drive_spawner
-        diff_bot_controller_spawner
-        
+        diff_bot_controller_spawner,
+        static_state_transform_publisher_node,        
     ])
