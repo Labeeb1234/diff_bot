@@ -9,9 +9,6 @@
 #include <vector>
 
 #include "controller_interface/controller_interface.hpp"
-#include "diff_drive_controller/odometry.hpp"
-#include "diff_drive_controller/speed_limiter.hpp"
-#include "diff_drive_controller/visibility_control.h"
 #include "geometry_msgs/msg/twist_stamped.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "hardware_interface/handle.hpp"
@@ -20,7 +17,10 @@
 #include "realtime_tools/realtime_box.h"
 #include "realtime_tools/realtime_buffer.h"
 #include "realtime_tools/realtime_publisher.h"
+#include "nav_msgs/msg/odometry.hpp"
 #include "tf2_msgs/msg/tf_message.hpp"
+#include "tf2_ros/transform_broadcaster.h"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 
 namespace diff_bot_controller
 {
@@ -52,6 +52,7 @@ public:
 protected:
     struct WheelHandle 
     {
+        std::reference_wrapper<const hardware_interface::LoanedStateInterface> position_state_;
         std::reference_wrapper<const hardware_interface::LoanedStateInterface> velocity_state;
         std::reference_wrapper<hardware_interface::LoanedCommandInterface> velocity_command;
     };
@@ -69,13 +70,48 @@ protected:
     double wheel_radius_;
     double wheel_separation_;
     
-    //rclcpp::Time previous_update_timestamp_{0};
+    struct RobotPose
+    {
+        double pose_x = 0.0;
+        double pose_y = 0.0;
+        double pose_th = 0.0;
+
+    }robot_pose_;
+
+    // odometry params
+    struct OdometryParams
+    {
+      bool open_loop = false;
+      bool enable_odom_tf = false;
+      std::string odom_frame_id = "odom";
+      std::string base_frame_id = "base_link";
+
+    };
+
+    // pid gain parameters
+
+    OdometryParams odom_params_;
+
+    //publishers for odom and tf calculations
+    rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_publisher_ = nullptr;
+    //rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr odom_transform_publisher_ = nullptr;
+
+    nav_msgs::msg::Odometry odom_msg_;
+    //std::shared_ptr<realtime_tools::RealtimePublisher<tf2_msgs::msg::TFMessage>> odom_transform_msg_ = nullptr; 
+
+    // storing the timestamp of previous published msg
+    rclcpp::Time previous_updated_timestamp_{0};
+
 
     double publish_rate_ = 50.0;
     rclcpp::Duration publish_period_ = rclcpp::Duration::from_nanoseconds(0);
     rclcpp::Time previous_publish_timestamp_{0, 0, RCL_CLOCK_UNINITIALIZED};
 
-    bool use_stamped_vel;
+    // custom reset function
+    bool is_reset = false;
+    bool reset();
+
+
 };
 }
 
