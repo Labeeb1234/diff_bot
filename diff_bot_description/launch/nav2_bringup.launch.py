@@ -18,7 +18,12 @@ def generate_launch_description():
     nav2_params_file = os.path.join(share_dir, 'config/nav2_params.yaml')
     map_file = os.path.join(share_dir, 'maps/turtlebot3_world.yaml')
 
-
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen'
+    )
     navigation_stack = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
@@ -37,6 +42,7 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            #rviz_node,
             navigation_stack,
 
         ])
