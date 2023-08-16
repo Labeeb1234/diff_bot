@@ -25,4 +25,114 @@
   </collision>
 </link>
 
+<link name="left_wheel_1">
+  <inertial>
+    <origin xyz="1.6067008834497187e-14 -0.00174999999999996 1.9949319973733282e-17" rpy="0 0 0"/>
+    <mass value="0.004509972238723067"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.021 -0.024 -0.0075" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find sam_bot_description)/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.021 -0.024 -0.0075" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find sam_bot_description)/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="right_wheel_1">
+  <inertial>
+    <origin xyz="1.6067008834497187e-14 0.00174999999999996 6.938893903907228e-18" rpy="0 0 0"/>
+    <mass value="0.004509972238723067"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.021 0.024 -0.0075" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find sam_bot_description)/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.021 0.024 -0.0075" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find sam_bot_description)/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="imu_link_1">
+  <inertial>
+    <origin xyz="0.0010000000000000703 9.263423361716054e-19 1.214306433183765e-17" rpy="0 0 0"/>
+    <mass value="0.00025119999812841425"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.025 -0.0 -0.0075" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find sam_bot_description)/meshes/imu_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.025 -0.0 -0.0075" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find sam_bot_description)/meshes/imu_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="lidar_link_1">
+  <inertial>
+    <origin xyz="3.635980405632155e-18 4.182700667547095e-13 0.0020000000000000226" rpy="0 0 0"/>
+    <mass value="0.0015783361491635791"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0 0.0 -0.0165" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find sam_bot_description)/meshes/lidar_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0 0.0 -0.0165" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find sam_bot_description)/meshes/lidar_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="Revolute 1" type="continuous">
+  <origin xyz="0.021 0.024 0.0075" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="left_wheel_1"/>
+  <axis xyz="-0.0 1.0 0.0"/>
+</joint>
+
+<joint name="Revolute 2" type="continuous">
+  <origin xyz="0.021 -0.024 0.0075" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="right_wheel_1"/>
+  <axis xyz="-0.0 1.0 0.0"/>
+</joint>
+
+<joint name="Rigid 3" type="fixed">
+  <origin xyz="0.025 0.0 0.0075" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="imu_link_1"/>
+</joint>
+
+<joint name="Rigid 4" type="fixed">
+  <origin xyz="0.0 0.0 0.0165" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="lidar_link_1"/>
+</joint>
+
 </robot>
