@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<robot name="sam_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find sam_bot_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find sam_bot_description)/urdf/sam_bot.trans" />
+<xacro:include filename="$(find sam_bot_description)/urdf/sam_bot.gazebo" />
+<link name="base_link">
+  <inertial>
+    <origin xyz="-1.1538674806553557e-05 2.767157223417654e-13 0.0077952514093595875" rpy="0 0 0"/>
+    <mass value="0.16670841146895982"/>
+    <inertia ixx="2.3e-05" iyy="3.5e-05" izz="5.5e-05" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find sam_bot_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find sam_bot_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+</robot>
