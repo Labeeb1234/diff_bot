@@ -8,7 +8,7 @@
   ---> LIDAR
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/6d543a61-8a11-4238-b966-e311904907d4" alt="images" width="480" height="640">
+  <img src="https://github.com/user-attachments/assets/6d543a61-8a11-4238-b966-e311904907d4" alt="images" width="640" height="480">
 </div>
 
 > **Note**: I get it the bot model is bad and needs improvements, this repo is for those starting out (just use any bot you have but the rest of the process just works)
