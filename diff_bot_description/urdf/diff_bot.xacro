@@ -2,10 +2,8 @@
 <robot name="diff_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 <xacro:include filename="$(find diff_bot_description)/urdf/materials.xacro" />
-<!--<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.trans" /> -->
-<!--<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.gazebo" /> -->
-
-<link name="base_footprint"/>
+<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.ros2_control.xacro" />
+<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.gazebo" /> 
 
 <link name="base_link">
   <inertial>
@@ -70,12 +68,6 @@
   </collision>
 </link>
 
-<joint name="fixed" type="fixed">
-  <origin xyz="0 0 0" rpy="0 0 0"/>
-  <parent link="base_footprint"/>
-  <child link="base_link"/>
-</joint>
-
 <joint name="right_wheel_joint" type="continuous">
   <origin xyz="0.2 0.24 0.035" rpy="0 0 0"/>
   <parent link="base_link"/>
@@ -90,27 +82,60 @@
   <axis xyz="0.0 1.0 0.0"/>
 </joint>
 
-<ros2_control name="GazeboSystem" type="system">
-  <hardware>
-    <plugin>gazebo_ros2_control/GazeboSystem</plugin>
-  </hardware>
-  <joint name="left_wheel_joint">
-    <command_interface name="velocity"/>
-    <!--<state_interface name="position"/>-->
-    <state_interface name="velocity"/>
-  </joint>
-    <joint name="right_wheel_joint">
-    <command_interface name="velocity"/>
-    <!--<state_interface name="position"/>-->
-    <state_interface name="velocity"/>
-  </joint>
-</ros2_control>
+<link name="lidar_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0.125"/>
+    <inertia ixx="0.001"  ixy="0"  ixz="0" iyy="0.001" iyz="0" izz="0.001" />
+  </inertial>
 
-<gazebo>
-  <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-    <parameters>$(find diff_bot_description)/config/robot_controller.yaml</parameters>
-  </plugin>
-</gazebo>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+       <cylinder radius="0.0508" length="0.055"/>
+    </geometry>
+  </collision>
+
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+       <cylinder radius="0.0508" length="0.055"/>
+    </geometry>
+  </visual>
+</link>
+
+<joint name="lidar_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="lidar_link"/>
+  <origin xyz="0 0 0.15" rpy="0 0 0"/>
+</joint>
+
+<link name="imu_link">
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+        <box size="0.02 0.02 0.02"/>
+    </geometry>
+  </collision>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.02 0.02"/>
+      </geometry>
+    <material name="silver"/>
+  </visual>
+    <inertial>
+      <mass value="0.001" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.00000015" ixy="0" ixz="0" iyy="0.00000015" iyz="0" izz="0.00000015" />
+    </inertial>
+</link>
+    
+<joint name="imu_sensor_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="imu_link"/>
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+</joint>
 
 
 </robot>
