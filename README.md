@@ -7,8 +7,12 @@
   ---> IMU
   ---> LIDAR
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/6d543a61-8a11-4238-b966-e311904907d4" alt="images" width="300">
+</div>
+
 > **Note**: I get it the bot model is bad and needs improvements, this repo is for those starting out (just use any bot you have but the rest of the process just works)
-![images](https://github.com/user-attachments/assets/6d543a61-8a11-4238-b966-e311904907d4)
+
 
 
 ---
