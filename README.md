@@ -9,7 +9,7 @@
 
 > **Note**: I get it the bot model is bad and needs improvements, this repo is for those starting out (just use any bot you have but the rest of the process just works)
 <div align="center">
-  <img src="https://media.tenor.com/images/5b5b8a8ebed1e4318af5b726007ad7b8/tenor.gif](https://tenor.com/view/todd-howard-it-just-works-bethesda-this-all-just-works-gif-20598651" alt="todd howard - it just works" width="300">
+  <img href="https://media.tenor.com/images/5b5b8a8ebed1e4318af5b726007ad7b8/tenor.gif](https://tenor.com/view/todd-howard-it-just-works-bethesda-this-all-just-works-gif-20598651" alt="todd howard - it just works" width="300">
 </div>
 
 ---
