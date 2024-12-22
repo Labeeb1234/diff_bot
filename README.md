@@ -8,9 +8,8 @@
   ---> LIDAR
 
 > **Note**: I get it the bot model is bad and needs improvements, this repo is for those starting out (just use any bot you have but the rest of the process just works)
-<div align="center">
-  <img src="https://media.tenor.com/images/5b5b8a8ebed1e4318af5b726007ad7b8/tenor.gif](https://tenor.com/view/todd-howard-it-just-works-bethesda-this-all-just-works-gif-20598651](https://www.google.com/url?sa=i&url=https%3A%2F%2Fimgur.com%2Fgallery%2Fjust-works-zf7yY6E&psig=AOvVaw2gH32CCQL0tqVvlToir10F&ust=1734968438103000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLjOmJ7bu4oDFQAAAAAdAAAAABAE" alt="todd howard - it just works" width="300">
-</div>
+![images](https://github.com/user-attachments/assets/6d543a61-8a11-4238-b966-e311904907d4)
+
 
 ---
 ## Base Controller
