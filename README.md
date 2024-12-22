@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/639b7e8c-a3e7-4de1-b427-80ad00b20809)# An Open Source Documentation of NAV2 Stack Integrated on our very friendly neighbourhood DiffBot with a modified ros2_controller for diff-drive 😊
+# An Open Source Documentation of NAV2 Stack Integrated on our very friendly neighbourhood DiffBot with a modified ros2_controller for diff-drive 😊
 ---
 ## Robot Model (A generic rough differential drive bot)
 - Kinematics of a 2-wheeled diff drive
