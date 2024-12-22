@@ -59,6 +59,7 @@ protected:
     
     std::vector<WheelHandle> registered_wheel_handles_;
     std::vector<std::string> wheel_joint_names_;
+    int num_wheels_;
 
     bool subscriber_is_active_ = false;
     //rclcpp::Subscription<Twist>::SharedPtr velocity_command_subscriber_;
