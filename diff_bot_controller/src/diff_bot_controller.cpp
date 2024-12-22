@@ -71,9 +71,10 @@ namespace diff_bot_controller
     {
         RCLCPP_INFO(get_node()->get_logger(), "Configuring DiffBotController.....\n");
 
+        num_wheels_ = get_node()->get_parameter("num_wheels").as_int();
         wheel_joint_names_ = get_node()->get_parameter("wheel_joint_names").as_string_array();
  
-        if(wheel_joint_names_.size() != 2)
+        if(wheel_joint_names_.size() != num_wheels_)
         {
             RCLCPP_ERROR(get_node()->get_logger(), "number wheels in params not matching the number of wheels on the model\n");
             return controller_interface::CallbackReturn::ERROR;
