@@ -1,4 +1,4 @@
-# An Open Source Documentation of NAV2 Stack Integrated on our very friendly neighbourhood DiffBot with a modified ros2_controller for diff-drive 😊
+![image](https://github.com/user-attachments/assets/639b7e8c-a3e7-4de1-b427-80ad00b20809)# An Open Source Documentation of NAV2 Stack Integrated on our very friendly neighbourhood DiffBot with a modified ros2_controller for diff-drive 😊
 ---
 ## Robot Model (A generic rough differential drive bot)
 - Kinematics of a 2-wheeled diff drive
@@ -16,9 +16,10 @@
 
 
 ---
-## Base Controller
+## Drive Controller and Sensor Setup (Simulation)
 - A custom ros2_control based diff-drive controller was developed from scratch which is responsible for the drive commands (based on wheel kinematics ofc)
 - cmd_vel topic exposer
-- 
+
+> **Note**: The ros2_control controller can even be used for hardware interface (after you develop the hardware_interface code for it that is  :-) [here is a tutorial explaining this](https://youtu.be/J02jEKawE5U?si=voKkIPAWuf_jeQ7E) ---> this guy explains everything for the hardware part and even has the code for the hardware interface using Arduino Boards....
 
 ## WORK---IN---PROGRESS
