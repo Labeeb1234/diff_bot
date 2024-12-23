@@ -36,10 +36,8 @@
 
 ---
 ## NAV2-Stack Integration
-----
 ### SLAM operation
 - **Teleop SLAM**
-----
 - **Auto SLAM**
 
 
