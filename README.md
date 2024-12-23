@@ -1,6 +1,10 @@
 # An Open Source Documentation of NAV2 Stack Integrated on our very friendly neighbourhood DiffBot with a modified ros2_controller for diff-drive 😊
 ---
 ## Robot Model (A generic rough differential drive bot)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/8b03e003-577b-4788-ba45-bcdd59a77109" alt="BOT Under Question">
+</div>
+- 4WD-Bot(Differential Drive); pic above
 - Kinematics of a 2-wheeled diff drive
 - sensors:
   ---> wheel encoders
@@ -34,10 +38,9 @@
 ## NAV2-Stack Integration
 ----
 ### SLAM operation
+- **Teleop SLAM**
 ----
-#### Teleop SLAM
-----
-#### Auto SLAM
+- **Auto SLAM**
 
 
 ## 
