@@ -46,7 +46,7 @@
 
 - The imu sensor for simulation was taken from the default [imu_ros_sensor plugin](https://github.com/ros-simulation/gazebo_ros_pkgs/blob/noetic-devel/gazebo_plugins/src/gazebo_ros_imu.cpp) for ROS2 version (Gazebo-Classic [EOL soon]). For the hardware we used an MPU9250 fusing the Mag and Gyro data to get the yaw and yaw_rates
 - The lidar sensor for simulation was taken from the default [ray_ros_sensor plugin](https://github.com/ros-simulation/gazebo_ros_pkgs/blob/ros2/gazebo_plugins/src/gazebo_ros_ray_sensor.cpp). For the hardware we used the rplidar A2M8 lidar for the laser scan data; SDK used: [ros2 rplidar wrapper](https://github.com/CreedyNZ/rplidar_ros2)
-- Optionally I also used the depth cam to simulate depth data, using a [custom realsense camera plugin](). For the hardware we used an Intel Realsense D435i device to get the pointcloud data to generate the "stvl_layer" for the nav2 stack
+- Optionally I also used the depth cam to simulate depth data, using a [custom realsense camera plugin](https://github.com/Labeeb1234/e-YRC-Hackathon/blob/main/realsense_gazebo_plugin/README.md). For the hardware we used an Intel Realsense D435i device to get the pointcloud data to generate the "stvl_layer" for the nav2 stack
 
 > **Note**: The hardware documentation is not completely included in this one, I was just mentioning them alongside the simulated sensors used for this project
 
