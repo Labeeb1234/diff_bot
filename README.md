@@ -35,6 +35,9 @@
 ----
 ### SLAM operation
 ----
+#### Teleop SLAM
+----
+#### Auto SLAM
 
 
 ## 
