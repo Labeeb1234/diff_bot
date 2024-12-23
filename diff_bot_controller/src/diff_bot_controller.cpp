@@ -72,8 +72,9 @@ namespace diff_bot_controller
         RCLCPP_INFO(get_node()->get_logger(), "Configuring DiffBotController.....\n");
 
         num_wheels_ = get_node()->get_parameter("num_wheels").as_int();
+        RCLCPP_INFO(get_node()->get_logger(), "setting number of wheels as: [%d]", num_wheels_);
+
         wheel_joint_names_ = get_node()->get_parameter("wheel_joint_names").as_string_array();
- 
         if(wheel_joint_names_.size() != num_wheels_)
         {
             RCLCPP_ERROR(get_node()->get_logger(), "number wheels in params not matching the number of wheels on the model\n");
@@ -230,12 +231,16 @@ namespace diff_bot_controller
         double v_x_des = msg_linear.x;
         double omega_des = msg_angular.z;
 
-        std::vector<double> wheel_velocity(2);
-        wheel_velocity[0] = (2*v_x_des + omega_des*wheel_separation_)/(2*wheel_radius_);
-        wheel_velocity[1] = (2*v_x_des - omega_des*wheel_separation_)/(2*wheel_radius_);
+        std::vector<double> wheel_velocity(num_wheels_);
+        wheel_velocity[0] = (2*v_x_des - omega_des*wheel_separation_)/(2*wheel_radius_);
+        wheel_velocity[1] = (2*v_x_des + omega_des*wheel_separation_)/(2*wheel_radius_);
+        wheel_velocity[2] = (2*v_x_des - omega_des*wheel_separation_)/(2*wheel_radius_);
+        wheel_velocity[3] = (2*v_x_des + omega_des*wheel_separation_)/(2*wheel_radius_);
 
         registered_wheel_handles_[0].velocity_command.get().set_value(wheel_velocity[0]);
         registered_wheel_handles_[1].velocity_command.get().set_value(wheel_velocity[1]);
+        registered_wheel_handles_[2].velocity_command.get().set_value(wheel_velocity[2]);
+        registered_wheel_handles_[3].velocity_command.get().set_value(wheel_velocity[3]);
         
         return controller_interface::return_type::OK;
     }
