@@ -18,6 +18,18 @@
 > **Note**: This repo is for those starting out on nav2 stack of ROS2 (just use any bot you have but the rest of the process just works)
 
 ---
+## Simulation Environment
+### Gazebo-Classic-Ver
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/7b658de1-af24-4b73-9f14-9ce09ed224ce" alt="env-gazebo-classic">
+</div>
+
+
+### Gazebo-Ignition-Ver
+
+---
+
+---
 ## Drive Controller and Sensor Setup (Simulation)
 - A custom ros2_control based diff-drive controller was developed from scratch which is responsible for the drive commands (based on wheel kinematics ofc)
 - As of now the diff_bot_controller is just for exposing the cmd_vel topic to control the motion of the bot; haven't integrated any innate odometery publisher or tf-broadcasters yet (which can be done easily with kinematics/wheel_encoder data)
