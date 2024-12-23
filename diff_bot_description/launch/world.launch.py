@@ -10,10 +10,8 @@ from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
     share_dir = get_package_share_directory('diff_bot_description')
-    world = os.path.join(share_dir, 'worlds/world_only.model')
-
-    use_sim_time = LaunchConfiguration('use_sim_time')
 
     use_sim_time_cmd = DeclareLaunchArgument(
         name='use_sim_time',
@@ -21,33 +19,18 @@ def generate_launch_description():
         description='use simulation clock if set to true'
     )
 
-    gazebo_server = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            PathJoinSubstitution([
-                FindPackageShare('gazebo_ros'),
-                'launch',
-                'gzserver.launch.py'
-            ])
-        ]),
-        launch_arguments={
-            'pause': 'true',
-            'world': world
-        }.items()
-    )
-
-    gazebo_client = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            PathJoinSubstitution([
-                FindPackageShare('gazebo_ros'),
-                'launch',
-                'gzclient.launch.py'
-            ])
-        ])
+    gz_launcher = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
+        launch_arguments={'gz_args': PathJoinSubstitution([
+            share_dir,
+            'worlds',
+            f'custom_warehouse2.sdf -r' 
+        ])}.items(),
     )
 
     return LaunchDescription([
         use_sim_time_cmd,
-        gazebo_server,
-        gazebo_client,      
+        gz_launcher     
     ])
 

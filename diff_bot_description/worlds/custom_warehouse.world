@@ -873,10 +873,10 @@
       <pose>-4.00435 4.45203 0 0 -0 0</pose>
     </model>
     <state world_name='default'>
-      <sim_time>133 524000000</sim_time>
-      <real_time>133 842694973</real_time>
-      <wall_time>1734888933 449439990</wall_time>
-      <iterations>133524</iterations>
+      <sim_time>203 685000000</sim_time>
+      <real_time>70 730189636</real_time>
+      <wall_time>1734937948 254321121</wall_time>
+      <iterations>70161</iterations>
       <model name='aws_robomaker_warehouse_ClutteringA_01'>
         <pose>-4.00435 4.45203 0 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -938,30 +938,30 @@
         </link>
       </model>
       <model name='aws_robomaker_warehouse_ClutteringD_01'>
-        <pose>4.78993 -1.05186 0 0 -0 0</pose>
+        <pose>4.78993 -1.05186 -0.235864 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>4.78993 -1.05186 0 0 -0 0</pose>
+          <pose>4.78993 -1.05186 -0.235864 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='aws_robomaker_warehouse_ClutteringD_01_0'>
-        <pose>4.17264 3.77661 0 0 -0 0</pose>
+        <pose>4.17264 3.77661 -0.238266 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>4.17264 3.77661 0 0 -0 0</pose>
+          <pose>4.17264 3.77661 -0.238266 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='aws_robomaker_warehouse_ClutteringD_01_1'>
-        <pose>-0.715326 -5.32703 0 0 -0 0</pose>
+        <pose>-0.715326 -5.32703 -0.226092 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>-0.715326 -5.32703 0 0 -0 0</pose>
+          <pose>-0.715326 -5.32703 -0.226092 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -1063,7 +1063,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>8.47221 -10.5754 23.9133 0 1.05164 2.26019</pose>
+        <pose>-3.36039 -6.77841 10.3958 -0 0.915639 0.955381</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>

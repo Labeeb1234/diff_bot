@@ -61,21 +61,12 @@ def generate_launch_description():
         output='screen'
     )
 
-    robot_localization_node = Node(
-        package='robot_localization',
-        executable='ekf_node',
-        name='ekf_filter_node',
-        output='screen',
-        parameters=[os.path.join(share_dir, 'config/ekf.yaml')]
-    )
-
     return LaunchDescription([
         gui_arg,
         use_sim_time_cmd,
         robot_state_publisher_node,
         joint_state_publisher_node,
         joint_state_publisher_gui_node,
-        # robot_localization_node,
         rviz_node,
       
     ])

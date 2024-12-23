@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 100
+    update_rate: 1000
     use_sim_time: true
 
     joint_broad:
@@ -12,8 +12,9 @@ controller_manager:
 
 diff_bot_controller:
   ros__parameters:
-    wheel_joint_names: ['left_wheel_joint', 'right_wheel_joint']
-    wheel_separation: 0.45
+    num_wheels: 4
+    wheel_joint_names: ['Revolute_3', 'Revolute_4', 'Revolute_5', 'Revolute_6']
+    wheel_separation: 0.5778 # 0.5778
     wheel_radius: 0.15
     is_reset: false
     publish_rate: 50.0
