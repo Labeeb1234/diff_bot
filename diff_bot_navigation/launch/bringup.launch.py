@@ -47,7 +47,7 @@ def generate_launch_description():
     declare_namespace_cmd = DeclareLaunchArgument(
         'namespace',
         default_value='',
-        description='Top-level namespace')
+        description='Top-level namespace') 
 
     declare_use_namespace_cmd = DeclareLaunchArgument(
         'use_namespace',
@@ -61,7 +61,7 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(nav2_dir, 'maps', 'new_map.yaml'),
+        default_value=os.path.join(nav2_dir, 'maps', 'new_map2.yaml'),
         description='Full path to map yaml file to load')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -71,7 +71,7 @@ def generate_launch_description():
 
     declare_params_file_cmd = DeclareLaunchArgument(
         'params_file',
-        default_value=os.path.join(nav2_dir, 'nav_params', 'auto_slam_nav_params.yaml'),
+        default_value=os.path.join(nav2_dir, 'nav_params', 'nav_params.yaml'),
         description='Full path to the ROS2 parameters file to use for all launched nodes')
 
     declare_autostart_cmd = DeclareLaunchArgument(
@@ -120,7 +120,7 @@ def generate_launch_description():
        executable='ekf_node',
        name='ekf_filter_node',
        output='screen',
-       parameters=[os.path.join(nav2_dir, 'config/ekf.yaml'), {'use_sim_time': use_sim_time}]
+       parameters=[os.path.join(nav2_dir, 'config/ekf.yaml'), {'use_sim_time': LaunchConfiguration('use_sim_time')}]
     )
 
     bringup_cmd_group = GroupAction([
@@ -172,7 +172,7 @@ def generate_launch_description():
     ])
 
     ld = LaunchDescription()
-    ld.add_action(stdout_linebuf_envvar)
+    ld.add_action(stdout_linebuf_envvar) 
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_namespace_cmd)
     ld.add_action(declare_slam_cmd)
@@ -188,8 +188,8 @@ def generate_launch_description():
     ld.add_action(bringup_cmd_group)
 
     ld.add_action(robot_localization_node)
-    ld.add_action(declare_mapper_online_async_param_cmd)
-    ld.add_action(mapper_online_async_param_launch)
+    # ld.add_action(declare_mapper_online_async_param_cmd)
+    # ld.add_action(mapper_online_async_param_launch)
 
 
     return ld
