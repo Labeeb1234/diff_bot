@@ -12,7 +12,7 @@
   ---> LIDAR
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/0b945339-4390-4472-9d93-8cf83ba6a45e" alt="images" width="640" height="480">
+  <img src="https://github.com/user-attachments/assets/0b945339-4390-4472-9d93-8cf83ba6a45e" alt="images">
 </div>
 
 > **Note**: This repo is for those starting out on nav2 stack of ROS2 (just use any bot you have but the rest of the process just works)
