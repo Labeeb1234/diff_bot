@@ -66,7 +66,7 @@
 - [Ignition Basic Tutorial/GZ Tutorial](https://gazebosim.org/docs/fortress/tutorials/)
 - [Latest Tutorials](https://gazebosim.org/docs/jetty/tutorials/)
 - Go through the ROS2 integration tutorials mainly to understand about the bridge and ROS2 Gazebo interoperability
-- Trying to launch GZ worlds using ROS2 launch files: [my launch file here](https://github.com/Labeeb1234/diff_bot/blob/main/diff_bot_description/launch/world.launch.py). Make sure the world file formats are in .sdf mainly
+- Trying to launch GZ worlds using ROS2 launch files: [my launch file here](https://github.com/Labeeb1234/diff_bot/blob/main/diff_bot_description/launch/world.launch.py). Make sure the world file formats are in ".sdf" mainly
 
 > **Note**: For detailed and similar launch as that of Gazebo-Classic add the server and client nodes given below:
 ``` python
@@ -83,11 +83,31 @@ gzclient_cmd = IncludeLaunchDescription(
     ),
     launch_arguments={'gz_args': '-g -v4 '}.items()
 )
-
-
 ```
 >
 > **Note**: This tutorial has used the Fortress Version of GZ simulator which may or may not have the composition features of using GZ, ROS2 and the ros_gz_bridge (I haven't exactly confirmed this but just learn the new tutorials as it has everything including the older features hence making the usage of GZ sim easier)  
 
-## WORK---IN---PROGRESS
+### URDF Spawning via ROS2
+---
+- "create" node of the ros_gz_sim package is used for the urdf spawning in GZ simulator using launch files, given below are the lines required to launch the said node
+``` python
+    urdf_spawn_node = Node(
+        package='ros_gz_sim',
+        executable='create',
+        output='screen',
+        arguments=['-string', robot_doc.toxml(),
+                   '-name', 'diff_bot',
+                   '-allow_renaming', 'true'
+        ]
+    )
+```
+- The entire launch file to launch a model from URDF using launch files is given [here](https://github.com/Labeeb1234/diff_bot/blob/main/diff_bot_description/launch/gz.launch.py)
+
+---
+
+### Bridging GZ/Ign Data to ROS2
+---
+
+
+## ==================== WORK---IN---PROGRESS ====================
 
