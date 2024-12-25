@@ -46,7 +46,7 @@
 
 - The imu sensor for simulation was taken from the default [imu_ros_sensor plugin](https://github.com/ros-simulation/gazebo_ros_pkgs/blob/noetic-devel/gazebo_plugins/src/gazebo_ros_imu.cpp) for ROS2 version (Gazebo-Classic [EOL soon]). For the hardware we used an MPU9250 fusing the Mag and Gyro data to get the yaw and yaw_rates
 - The lidar sensor for simulation was taken from the default [ray_ros_sensor plugin](https://github.com/ros-simulation/gazebo_ros_pkgs/blob/ros2/gazebo_plugins/src/gazebo_ros_ray_sensor.cpp). For the hardware we used the rplidar A2M8 lidar for the laser scan data; SDK used: [ros2 rplidar wrapper](https://github.com/CreedyNZ/rplidar_ros2)
-- Optionally I also used the depth cam to simulate depth data, using the default [depth_camera plugin](). For the hardware we used an Intel Realsense D435i device to get the pointcloud data to generate the "stvl_layer" for the nav2 stack
+- Optionally I also used the depth cam to simulate depth data, using a custom [realsense_cam_plugin](https://github.com/Labeeb1234/e-YRC-Hackathon/blob/main/realsense_gazebo_plugin/README.md). For the hardware we used an Intel Realsense D435i device to get the pointcloud data to generate the "stvl_layer" for the nav2 stack
 
 > **Note**: The hardware documentation is not completely included in this one, I was just mentioning them alongside the simulated sensors used for this project
 
@@ -56,7 +56,38 @@
 - **Teleop SLAM**
 - **Auto SLAM**
 
+---
+## Ignition Gazebo/ GZ_SIM
+### Handling The Bare Basics to start with ROS2-GZ
+---
+- For the ignition gazebo/gz_sim setup of the same setup used for gazebo-classic few key changes needs to be made in the launch file as well as the bot model URDF file
+- Before diving in first install the compatible GZ simulator in your system, preferrably a stable version corresponding to the ROS2 distro installed. A guide for the same is [given here](https://gazebosim.org/docs/all/getstarted/). Read through the installation guide and install the simulator
+- Now install the ROS2 dependencies and plugins and bridge nodes corresponding to your configuration
+- [Ignition Basic Tutorial/GZ Tutorial](https://gazebosim.org/docs/fortress/tutorials/)
+- [Latest Tutorials](https://gazebosim.org/docs/jetty/tutorials/)
+- Go through the ROS2 integration tutorials mainly to understand about the bridge and ROS2 Gazebo interoperability
+- Trying to launch GZ worlds using ROS2 launch files: [my launch file here](https://github.com/Labeeb1234/diff_bot/blob/main/diff_bot_description/launch/world.launch.py). Make sure the world file formats are in .sdf mainly
 
-## 
+> **Note**: For detailed and similar launch as that of Gazebo-Classic add the server and client nodes given below:
+``` python
+gzserver_cmd = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+        os.path.join(ros_gz_sim, 'launch', 'gz_sim.launch.py')
+    ),
+    launch_arguments={'gz_args': ['-r -s -v4 ', world], 'on_exit_shutdown': 'true'}.items()
+)
+
+gzclient_cmd = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+        os.path.join(ros_gz_sim, 'launch', 'gz_sim.launch.py')
+    ),
+    launch_arguments={'gz_args': '-g -v4 '}.items()
+)
+
+
+```
+>
+> **Note**: This tutorial has used the Fortress Version of GZ simulator which may or may not have the composition features of using GZ, ROS2 and the ros_gz_bridge (I haven't exactly confirmed this but just learn the new tutorials as it has everything including the older features hence making the usage of GZ sim easier)  
+
 ## WORK---IN---PROGRESS
-# Ignition Gazebo Navigation Simulation......
+
