@@ -13,10 +13,22 @@ def generate_launch_description():
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
     share_dir = get_package_share_directory('diff_bot_description')
 
+    xacro_file = os.path.join(share_dir, 'urdf', 'diff_bot.xacro')
+    robot_doc = xacro.parse(open(xacro_file))
+    xacro.process_doc(robot_doc)
+    robot_description = robot_doc.toxml()
+
     use_sim_time_cmd = DeclareLaunchArgument(
         name='use_sim_time',
         default_value='True',
         description='use simulation clock if set to true'
+    )
+
+    robot_state_publisher_node = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        parameters=[{'robot_description': robot_description, 'use_sim_time': LaunchConfiguration('use_sim_time')}]
     )
 
     gz_launcher = IncludeLaunchDescription(
@@ -25,12 +37,25 @@ def generate_launch_description():
         launch_arguments={'gz_args': PathJoinSubstitution([
             share_dir,
             'worlds',
-            f'custom_warehouse3.sdf -r' 
+            f'empty.sdf -r' 
         ])}.items(),
     )
 
-    return LaunchDescription([
-        use_sim_time_cmd,
-        gz_launcher     
-    ])
+    urdf_spawn_node = Node(
+        package='ros_gz_sim',
+        executable='create',
+        output='screen',
+        arguments=['-string', robot_doc.toxml(),
+                   '-name', 'diff_bot',
+                   '-allow_renaming', 'true'
+        ]
+    )
 
+
+    ld = LaunchDescription()
+    ld.add_action(use_sim_time_cmd)
+    ld.add_action(robot_state_publisher_node)
+    ld.add_action(gz_launcher)
+    ld.add_action(urdf_spawn_node)
+
+    return ld
