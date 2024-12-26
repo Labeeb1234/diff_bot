@@ -54,7 +54,10 @@
 ## NAV2-Stack Integration
 ### SLAM operation
 - **Teleop SLAM**
+![teleop_slam](https://github.com/user-attachments/assets/9c42b915-349d-4f29-9cc3-e5bd41bd26b3)
+
 - **Auto SLAM**
+
 
 ---
 ## Ignition Gazebo/ GZ_SIM
