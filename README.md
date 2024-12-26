@@ -70,6 +70,24 @@ sudo apt install ros-${DISTRO}-slam-toolbox
   <img src="https://github.com/Labeeb1234/diff_bot/blob/main/new_map2.png" alt="map2">
 </div>
 
+- For saving a map either do this:
+``` bash
+ros2 run nav2_map_server map_saver_cli -f ~/<your_map_name>
+```
+- or do this:
+-> Go to "panels" on RViz and click on "add new panel" and add the thing shown below
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/52eccbc3-e1bb-4a2f-aae8-a3922129d9cc" alt="slam_toolbox_panel">
+</div>
+-> After adding the slam tool box panel type in your map name in the save_map and serialize_map section as shown below:
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/a9671111-04f0-4c03-96f2-24f2910253d1" alt="slam_toolbox_panel">
+</div>
+-> Then click on save_map after that click on serialize_map(optional as long as .yaml and .pgm files are present its okay) 
+
+
+
+
 
 ---
 ## Ignition Gazebo/ GZ_SIM
