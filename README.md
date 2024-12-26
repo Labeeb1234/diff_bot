@@ -68,7 +68,7 @@ sudo apt install ros-${DISTRO}-slam-toolbox
 - For Auto SLAM just adjust the local planner velocity and acceleration parameters for the SLAM mapping task, like how I did it [here](https://github.com/Labeeb1234/diff_bot/blob/main/diff_bot_navigation/nav_params/auto_slam_nav_params.yaml). Scroll down to the controller section of [this param file](https://github.com/Labeeb1234/diff_bot/blob/main/diff_bot_navigation/nav_params/auto_slam_nav_params.yaml)
 - Given below is the portion of the environment mapped out in Gazebo-Classic environment using the SLAM-Toolbox of NAV2
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/d416d763-3de9-48fe-8dd2-17d26d63bba5" alt="map2">
+  <img src="https://github.com/Labeeb1234/diff_bot/blob/main/new_map2.png" alt="map2">
 </div>
 
 
