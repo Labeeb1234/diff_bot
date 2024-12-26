@@ -21,7 +21,7 @@
 ## Simulation Environment
 ### Gazebo-Classic-Ver
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/7b658de1-af24-4b73-9f14-9ce09ed224ce" alt="env-gazebo-classic">
+  <img src="" alt="env-gazebo-classic">
 </div>
 
 
