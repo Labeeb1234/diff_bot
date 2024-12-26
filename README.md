@@ -61,6 +61,8 @@ sudo apt install ros-${DISTRO}-slam-toolbox
 ![teleop_slam](https://github.com/user-attachments/assets/9c42b915-349d-4f29-9cc3-e5bd41bd26b3)
 
 - **Auto SLAM**
+- Method-1 (Using only the base local planners of NAV2)
+- Method-2 
 
 
 - While doing SLAM mapping(Auto/Teleop) make sure to move the bot slowly to get the map updates properly (quite resource intensive; more over make sure the update_rates of the base feedbacks that go to the ekf node are appropriates to ensure less errors between map->odom tf data
