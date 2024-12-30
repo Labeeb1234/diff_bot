@@ -68,24 +68,24 @@
 </gazebo>
 
 <gazebo>
-    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
-        <left_joint>Revolute_3</left_joint>
-        <left_joint>Revolute_5</left_joint>
-        <right_joint>Revolute_4</right_joint>
-        <right_joint>Revolute_6</right_joint>
+  <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+    <left_joint>Revolute_3</left_joint>
+    <left_joint>Revolute_5</left_joint>
+    <right_joint>Revolute_4</right_joint>
+    <right_joint>Revolute_6</right_joint>
 
-        <wheel_separation>0.5778</wheel_separation>
-        <wheel_radius>0.15</wheel_radius> 
+    <wheel_separation>0.5778</wheel_separation>
+    <wheel_radius>0.15</wheel_radius> 
 
-        <max_linear_acceleration>0.033</max_linear_acceleration> 
-        <topic>cmd_vel</topic> 
+    <max_linear_acceleration>10.0</max_linear_acceleration> 
+    <topic>cmd_vel</topic> 
 
-        <odom_topic>odometry/unfiltered</odom_topic> 
-        <frame_id>odom</frame_id> 
-        <child_frame_id>base_footprint</child_frame_id> 
-        <odom_publisher_frequency>50</odom_publisher_frequency> 
-        <tf_topic>tf</tf_topic> 
-    </plugin>
+    <odom_topic>odometry/unfiltered</odom_topic> 
+    <frame_id>odom</frame_id> 
+    <child_frame_id>base_footprint</child_frame_id> 
+    <odom_publisher_frequency>100</odom_publisher_frequency> 
+    <tf_topic>tf</tf_topic> 
+  </plugin>
 </gazebo>
 
 <gazebo>

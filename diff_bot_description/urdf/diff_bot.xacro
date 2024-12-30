@@ -2,9 +2,9 @@
 <robot name="diff_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 <xacro:include filename="$(find diff_bot_description)/urdf/materials.xacro" />
-<!-- <xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.gazebo" />
-<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.ros2_control.xacro" /> -->
-<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.gz.xacro" />
+<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.gazebo" />
+<xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.ros2_control.xacro" />
+<!-- <xacro:include filename="$(find diff_bot_description)/urdf/diff_bot.gz.xacro" /> -->
 
 <link name="base_footprint"/>
 <link name="base_link">

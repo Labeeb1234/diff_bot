@@ -22,7 +22,7 @@ def generate_launch_description():
     use_sim_time_cmd = DeclareLaunchArgument(
         name='use_sim_time',
         default_value='True',
-        description='use simulation clock if set to true'
+        description='use simulation clock if set to true' 
     )
 
     robot_state_publisher_node = Node(

@@ -18,10 +18,12 @@ def generate_launch_description():
     xacro.process_doc(robot_doc)
     robot_description = robot_doc.toxml()
 
+    bridge_params = os.path.join(share_dir, 'config/bridge_params.yaml')
+
     use_sim_time_cmd = DeclareLaunchArgument(
         name='use_sim_time',
         default_value='True',
-        description='use simulation clock if set to true'
+        description='use simulation clock if set to true' 
     )
 
     robot_state_publisher_node = Node(
@@ -37,7 +39,7 @@ def generate_launch_description():
         launch_arguments={'gz_args': PathJoinSubstitution([
             share_dir,
             'worlds',
-            f'empty.sdf -r' 
+            f'empty.sdf -r', 
         ])}.items(),
     )
 
@@ -47,13 +49,28 @@ def generate_launch_description():
         output='screen',
         arguments=['-string', robot_doc.toxml(),
                    '-name', 'diff_bot',
-                   '-allow_renaming', 'true'
+                   '-allow_renaming', 'true',
+                   '-x', '0.0',
+                   '-y', '0.0',
+                   '-z', '-0.0626'
         ]
+    )
+
+    ign_ros2_bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '--ros-args',
+            '-p',
+            f'config_file:={bridge_params}',
+        ],
+        output='screen',
     )
 
 
     ld = LaunchDescription()
     ld.add_action(use_sim_time_cmd)
+    ld.add_action(ign_ros2_bridge)
     ld.add_action(robot_state_publisher_node)
     ld.add_action(gz_launcher)
     ld.add_action(urdf_spawn_node)
