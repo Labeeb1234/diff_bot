@@ -71,6 +71,7 @@ sudo apt install ros-${DISTRO}-slam-toolbox
 <div align="center">
   <img src="https://github.com/user-attachments/assets/51d03756-9e9b-485b-a1dd-ea5995abc0f6" alt="map2">
 </div>
+- Map created using Auto SLAM (Method-2)
 <div align="center">
   <img src="https://github.com/user-attachments/assets/585180ed-99e7-48fd-aec0-2b2cb0b76859" alt="auto_slam_map">
 </div>
