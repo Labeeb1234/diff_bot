@@ -159,6 +159,15 @@ gzclient_cmd = IncludeLaunchDescription(
 ### Bridging GZ/Ign Data to ROS2
 ---
 
+### SLAM AND NAVIGATION IN GZ/IGN
+---
+- The basic procedures for setting up nav_stack and the launch files are the same as in Gazebo-Classic
+- The results of the same are given below
+- **SLAM**
+<div align="center">
+  <img src="" alt="gz_slam">
+</div>
+
 
 ## ================= WORK---IN---PROGRESS ==================
 
