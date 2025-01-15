@@ -58,10 +58,16 @@ sudo apt install ros-${DISTRO}-slam-toolbox
 ```
 
 - **Teleop SLAM**
+- A manual control based SLAM mapping
 ![teleop_slam](https://github.com/user-attachments/assets/9c42b915-349d-4f29-9cc3-e5bd41bd26b3)
 
 - **Auto SLAM**
 - Method-1 (Using only the base local planners of NAV2)
+  - This method involves nothing but just the local planners help in navigating to waypoints in the unknown/unexplored regions so that the map regions within the planned path gets mapped out. Not a very efficient auto SLAM method but it works, given below is a sample demo of the same
+<div align="center>
+  <img src="https://github.com/user-attachments/assets/fe07f899-c0fe-4c2f-b768-753b4aa0b3f2" alt="auto_slam_ver1">
+</div>
+
 - Method-2 
 
 
