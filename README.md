@@ -66,14 +66,14 @@ sudo apt install ros-${DISTRO}-slam-toolbox
     - This method involves nothing but just the local planners help in navigating to waypoints in the unknown/unexplored regions so that the map regions within the planned path gets mapped out. Not a very efficient auto SLAM method but it works, given below is a sample demo of the same.
 
   <div align="center">
-    <img src="https://github.com/user-attachments/assets/fe07f899-c0fe-4c2f-b768-753b4aa0b3f2" alt="auto_slam_ver1">
+    <img src="https://github.com/user-attachments/assets/ec2dca0c-2f55-4d67-b24c-c3a6c33db045" alt="auto_slam_ver1">
   </div>
 
   - Method-2 (WaveFrontier Exploration)
     - This method involves the usage of the wavefrontier exploration alogrithm, which way more effective than method-1 as the bot moves into the interface between the explored and unknown regions with the help of wave_frontiers which act as goal poses for the bot's local planner/controller and does the SLAM routine. All creds to this repo and the guy who made it; [m-explore-ros2](https://github.com/robo-friends/m-explore-ros2). All the instructions pertaining to the installation and usage is given in this repo for your refrence, for my implemenation take a look [here](https://github.com/Labeeb1234/diff_bot/tree/main/diff_bot_navigation/launch), the config file has the exploration params and also a separate launch file to launch the exploration node. Also for more info about the working of this alogrithm in mobile robotics application please refer to this [(paper-creds to the guys who_wrote_it)](https://arxiv.org/pdf/1806.03581).
     
     <div align="center">
-      <img src="" alt="auto_slam_ver1">
+      <img src="https://github.com/user-attachments/assets/9b17d8e7-5241-4d04-acd7-a3d7b8e9d5dc" alt="auto_slam_ver1">
     </div>
     
 - While doing SLAM mapping(Auto/Teleop) make sure to move the bot slowly to get the map updates properly (quite resource intensive; more over make sure the update_rates of the base feedbacks that go to the ekf node are appropriates to ensure less errors between map->odom tf data
