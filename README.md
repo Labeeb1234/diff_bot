@@ -85,7 +85,7 @@ sudo apt install ros-${DISTRO}-slam-toolbox
 
 - Map created using Auto SLAM (Method-2)
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/585180ed-99e7-48fd-aec0-2b2cb0b76859" alt="auto_slam_map">
+  <img src="https://github.com/user-attachments/assets/bc58b5c3-d018-4d72-8b58-4ea77346b2c7" alt="auto_slam_map">
 </div>
 
 - For saving a map either do this:
