@@ -177,7 +177,7 @@ gzclient_cmd = IncludeLaunchDescription(
 ### Setup
 ---
 
-- Design is the same for the bot as well as the sensor setup too but the entire thing is done in IsaacSim similar setup process as my other project on [4W-OmniBot]()
+- Design is the same for the bot as well as the sensor setup too but the entire thing is done in IsaacSim similar setup process as my other project on [4W-OmniBot](https://github.com/Labeeb1234/omni_bot)
 
 ---
 
