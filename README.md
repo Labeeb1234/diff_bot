@@ -168,6 +168,31 @@ gzclient_cmd = IncludeLaunchDescription(
   <img src="" alt="gz_slam">
 </div>
 
+---
+
+# New Update (Setup and Automation on NVIDIA IsaacSim 4.5.0 --> expected to work on 5.0.0 due to minimal updates to the simulator)
+
+---
+
+### Setup
+---
+
+- Design is the same for the bot as well as the sensor setup too but the entire thing is done in IsaacSim similar setup process as my other project on [4W-OmniBot]()
+
+---
+
+### Purpose of this
+---
+- Just to make a sim ready setup for a realistic and reliable simulator like IsaacSim since the Gazebo-Sim f*cked up a little.
+- To test some of my custom path planner that I want to integrate to the NAV2 stack.
+- To easily test out new features of NAV2 stack.
+- To test some VLAs on a 3D rendered enviroment before performing experiments on the hardware and also get a rough idea on how the process works.
+
+---
+
+### Video Demos (will be added DW)
+---
+**Video Soon**
 
 ## ================= WORK---IN---PROGRESS ==================
 
