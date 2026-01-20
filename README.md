@@ -179,6 +179,11 @@ gzclient_cmd = IncludeLaunchDescription(
 
 - Design is the same for the bot as well as the sensor setup too but the entire thing is done in IsaacSim similar setup process as my other project on [4W-OmniBot](https://github.com/Labeeb1234/omni_bot)
 
+- **New Test Environment**
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/b31aa3ea-f444-418d-bd0e-fbe1ecd26c59" alt="env-isaac-sim">
+</div>
+
 ---
 
 ### Purpose of this
