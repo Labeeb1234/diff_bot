@@ -197,7 +197,10 @@ gzclient_cmd = IncludeLaunchDescription(
 
 ### Video Demos (will be added DW)
 ---
-**Video Soon**
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/889019be-31de-4093-870b-f4d4025e5818" alt="sam3-object_seg_test_on_bot">
+</div>
 
 ## ================= WORK---IN---PROGRESS ==================
 
