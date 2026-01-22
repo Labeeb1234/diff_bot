@@ -1,0 +1,32 @@
+{
+	"nodes":[
+		{"id":"3b3847ba61e4c1d1","type":"text","text":"Sim Ready Bot for IsaacSim 4.5.0\n- 4WD bot (done)","x":-640,"y":-300,"width":250,"height":130},
+		{"id":"cc81a1b18bd8f849","type":"text","text":"Simulated Sensor Setup\n- 2D-LiDAR (done)\n- Imu (done)\n- wheel encoders (done)\n- 3D-depth-cams (realsense)\n- Normal RGB CAMs","x":-640,"y":-80,"width":250,"height":250},
+		{"id":"b7e9b0697b40539f","type":"text","text":"Env\nversion-0 (done)","x":-640,"y":-461,"width":250,"height":60},
+		{"id":"2af9ab53a84f0555","type":"text","text":"ROS2 Interfacing","x":-638,"y":287,"width":250,"height":60},
+		{"id":"d4249536489bb427","type":"text","text":"Joint Configuration and tuning (tuned using Gain tuner PD-controller for join velocities)","x":-1040,"y":-60,"width":250,"height":140},
+		{"id":"211d63e172848085","type":"text","text":"ROS2-DDS (coms protocol) config for each topic (later on)","x":-1040,"y":170,"width":250,"height":102},
+		{"id":"68bd79c442c98f7f","type":"text","text":"Create a custom 4WD controller for the robot","x":-855,"y":437,"width":250,"height":60},
+		{"id":"c310e435e4e537fe","type":"text","text":"OmniGraph Setup for sensors and actuators (if required\n- For actuators create articulation controllers\n\n","x":-280,"y":-20,"width":280,"height":160},
+		{"id":"b53bdbff5adf5d5f","type":"text","text":"AI for robotics\n- Try a few vision transformer models for object detection in environment (SAM3) (init test)\n- VLAs","x":780,"y":-691,"width":365,"height":230},
+		{"id":"4825a5746c7b0fcc","type":"text","text":"Simple AI integration Test in IsaacSim\n- Testing SAM3 on camera render product in IsaacSim\n- Record Results (init views)","x":780,"y":-414,"width":365,"height":354},
+		{"id":"e2d8bf3bd27aa359","type":"text","text":"camera data (IsaacSim)","x":1160,"y":-400,"width":250,"height":60},
+		{"id":"2633d50f08d89d33","type":"text","text":"SAM3","x":1230,"y":-297,"width":110,"height":60},
+		{"id":"98efdfedd12ce45f","x":1500,"y":-400,"width":99,"height":60,"type":"text","text":"SAM2"},
+		{"id":"bf5ec75c9d257255","x":1550,"y":-231,"width":250,"height":118,"type":"text","text":"Detects and segments the objects but quite slow even the smaller model is slow but the pipeline is working "},
+		{"id":"64b468d71e2b52ff","x":1260,"y":-173,"width":250,"height":60,"type":"text","text":"prediction/inferencing null outs"}
+	],
+	"edges":[
+		{"id":"c3cebc736cd842b8","fromNode":"3b3847ba61e4c1d1","fromSide":"bottom","toNode":"cc81a1b18bd8f849","toSide":"top"},
+		{"id":"e3ac2bcda6d7f702","fromNode":"3b3847ba61e4c1d1","fromSide":"left","toNode":"d4249536489bb427","toSide":"right"},
+		{"id":"62f05aeb0d34238c","fromNode":"3b3847ba61e4c1d1","fromSide":"right","toNode":"c310e435e4e537fe","toSide":"left"},
+		{"id":"3abff046fe1e7ed9","fromNode":"3b3847ba61e4c1d1","fromSide":"top","toNode":"b7e9b0697b40539f","toSide":"bottom"},
+		{"id":"9b4d57b4a0290de1","fromNode":"cc81a1b18bd8f849","fromSide":"bottom","toNode":"2af9ab53a84f0555","toSide":"top"},
+		{"id":"91b1fb90da462734","fromNode":"2af9ab53a84f0555","fromSide":"bottom","toNode":"68bd79c442c98f7f","toSide":"top"},
+		{"id":"e59c4c6c061395cc","fromNode":"c310e435e4e537fe","fromSide":"bottom","toNode":"2af9ab53a84f0555","toSide":"top"},
+		{"id":"73f2c8906a18cc28","fromNode":"e2d8bf3bd27aa359","fromSide":"bottom","toNode":"2633d50f08d89d33","toSide":"top"},
+		{"id":"6ba079806e7ddf1c","fromNode":"2633d50f08d89d33","fromSide":"bottom","toNode":"64b468d71e2b52ff","toSide":"top"},
+		{"id":"2e9f42e1137fa194","fromNode":"e2d8bf3bd27aa359","fromSide":"right","toNode":"98efdfedd12ce45f","toSide":"left"},
+		{"id":"7f39739885484ae0","fromNode":"98efdfedd12ce45f","fromSide":"bottom","toNode":"bf5ec75c9d257255","toSide":"top"}
+	]
+}
