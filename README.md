@@ -195,7 +195,7 @@ gzclient_cmd = IncludeLaunchDescription(
 
 ---
 
-### Video Demos (will be added DW)
+### Video Demos
 ---
 
 <div align="center">
