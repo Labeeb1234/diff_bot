@@ -202,5 +202,7 @@ gzclient_cmd = IncludeLaunchDescription(
   <img src="https://github.com/user-attachments/assets/889019be-31de-4093-870b-f4d4025e5818" alt="sam3-object_seg_test_on_bot">
 </div>
 
+- **Note to self**: Need to test the new optimal models that can run better on edge systems.
+
 ## ================= WORK---IN---PROGRESS ==================
 
